@@ -21,5 +21,5 @@ modif_coul(COULEUR, mods = 0.5, modv = 0.5, modh = 0.5, alpha = 1)
 un code hexadécimal de couleur
 }
 \description{
-modif_coul
+Permet de modifier des couleurs
 }

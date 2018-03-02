@@ -1712,7 +1712,7 @@ radarchart2<-function (df, axistype = 0, seg = 4, pty = 16, pcol = 1:8, plty = 1
 #' 22) #et classe 7
 #'
 #' boundaries<-c(1,2,3,7,10,15)
-#' classnames<-paste("classe",c(1:(length(bornes)+1)))
+#' classnames<-paste("classe",c(1:(length(boundaries)+1)))
 #' Classes<-Classes_def(variable,boundaries,classnames)
 #' data.frame(Classes,variable)
 Classes_def<-function(variab,bornes,noms_classes)
@@ -1912,6 +1912,8 @@ Sim_Clust_Ordre<-function(TAB_FREQ_CLU,NOM_CLU,TAB_ORDRE,METH = "bray",BINA = F)
 
 #' modif_coul
 #'
+#' @description  Permet de modifier des couleurs
+#'
 #' @param COULEUR une couleur, soit en nom de couleur R ("cadetblue"), soit en code hexadécimal
 #' @param mods coefficient modérateur de la saturation, sous 0.5 ça désature, au dessus, ça sature
 #' @param modv coefficient modérateur de la brillance, sous 0.5 ça fonce, au dessus, ça éclaircit
@@ -1919,6 +1921,8 @@ Sim_Clust_Ordre<-function(TAB_FREQ_CLU,NOM_CLU,TAB_ORDRE,METH = "bray",BINA = F)
 #' @param alpha transparence, sous 1, ça devient transparent
 #'
 #' @return un code hexadécimal de couleur
+#' @export
+#'
 modif_coul<-function(COULEUR,mods=0.5,modv=0.5,modh=0.5,alpha =1){
   RGB<-rgb2hsv(r=matrix(data = c(col2rgb(COULEUR)[1]/255,
                                  col2rgb(COULEUR)[2]/255,

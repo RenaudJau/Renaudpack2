@@ -25,7 +25,7 @@ variable<-c(0.5, #classe 1
 22) #et classe 7
 
 boundaries<-c(1,2,3,7,10,15)
-classnames<-paste("classe",c(1:(length(bornes)+1)))
+classnames<-paste("classe",c(1:(length(boundaries)+1)))
 Classes<-Classes_def(variable,boundaries,classnames)
 data.frame(Classes,variable)
 }
