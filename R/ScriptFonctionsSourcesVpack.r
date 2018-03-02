@@ -30,6 +30,7 @@
 #M?J 22-04-2016 : ajout de la fonction Fonction_hist_double
 #M?J 23-05-2016 : correction bug sous titre dans Fonction_hist_double
 #MaJ 25-10-2016 : ajout de la fonctionSim_Clust_Ordre
+#MaJ 02-03-2018 : ajout de la fonction modif_coul
 
 
 # Pour appeler toutes les fonctions qui suivent en d?but de script sans avoir
@@ -1905,5 +1906,30 @@ Sim_Clust_Ordre<-function(TAB_FREQ_CLU,NOM_CLU,TAB_ORDRE,METH = "bray",BINA = F)
     bray_ordre[i]<-1-(raup.calc(clui_O_esp,i,1,method=METH,binary=BINA))
   }
   return(data.frame(Alliance=clui_O$Num_releve,Similarite=bray_ordre,rang=(rank(-bray_ordre)-1)))
+}
+
+#-------------------------- modif_coul ---------------------------------------------
+
+#' modif_coul
+#'
+#' @param COULEUR une couleur, soit en nom de couleur R ("cadetblue"), soit en code hexadécimal
+#' @param mods coefficient modérateur de la saturation, sous 0.5 ça désature, au dessus, ça sature
+#' @param modv coefficient modérateur de la brillance, sous 0.5 ça fonce, au dessus, ça éclaircit
+#' @param modh coefficient modérateur de la teinte, ça tourne en rond..
+#' @param alpha transparence, sous 1, ça devient transparent
+#'
+#' @return un code hexadécimal de couleur
+modif_coul<-function(COULEUR,mods=0.5,modv=0.5,modh=0.5,alpha =1){
+  RGB<-rgb2hsv(r=matrix(data = c(col2rgb(COULEUR)[1]/255,
+                                 col2rgb(COULEUR)[2]/255,
+                                 col2rgb(COULEUR)[3]/255),nrow = 3))
+  h<-RGB[1]
+  s<-RGB[2]
+  v<-RGB[3]
+  h2<-if(modh<=0.5) h*modh*2 else (modh*(2-2*h)+2*h-1)
+  s2<-if(mods<=0.5) s*mods*2 else (mods*(2-2*s)+2*s-1)
+  v2<-modv
+  newc<-hsv(h2,s2,v2,alpha = alpha)
+  return(newc)
 }
 
