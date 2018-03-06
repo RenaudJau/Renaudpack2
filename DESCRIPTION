@@ -1,7 +1,7 @@
 Package: Renaudpack2
 Type: Package
 Title: Un fourre tout de mes fonctions...
-Version: 0.0.0.9005
+Version: 0.0.0.9006
 Date: 2018-03-02
 Author: Renaud Jaunatre
 Maintainer: Renaud <renaud.jaunatre@irstea.fr>
@@ -9,6 +9,7 @@ Description: Un peu de tout j'ai dit...
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 6.0.1
+Encoding: UTF-8
 Imports: ade4,
     vegan,
     fmsb,

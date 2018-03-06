@@ -31,39 +31,7 @@
 #M?J 23-05-2016 : correction bug sous titre dans Fonction_hist_double
 #MaJ 25-10-2016 : ajout de la fonctionSim_Clust_Ordre
 #MaJ 02-03-2018 : ajout de la fonction modif_coul
-
-
-# Pour appeler toutes les fonctions qui suivent en d?but de script sans avoir
-#atout copier, juste cette ligne (sans le di?se...):
-# source("D:/Documents and Settings/jaunatrer/Bureau/Analyses/ScriptFonctionsSources.r")
-# source("C:/Users/renaud.jaunatre/Documents/Analyses/ScriptFonctionsSources.r")
-# setwd("C:/Users/renaud.jaunatre/Desktop")
-
-
-#sem -- 61
-#IC -- 68
-#rar.rm -- ligne 35
-#barres.plot -- ligne 65
-#IndiceRestau -- ligne 142
-#structure.plot -- ligne 290
-#combin.tab -- ligne 354
-#combin.tabV0 -- ligne 396
-#raup.calc -- ligne 429
-#DissRef -- ligne 457
-#label.cor -- ligne 502
-#BBtransf -- ligne 523
-#Time.factor.plot -- ligne 590
-#Head2head.plot -- ligne 794
-#MultiDyn -- 799
-#structure.plotV2 -- 867
-#barres.plot.beside -- 1039
-#Letters -- 1216
-#multivar.polyg -- 1296
-#better_arrows -- 1354
-#Remplacer -- 1391
-#radarchart2 -- 1426
-#Classes_def -- 1641
-
+#MaJ 06-03-2018 : ajout de la fonction point.plot
 
 #--------------------------sem  ---------------------------------------------
 
@@ -1923,6 +1891,17 @@ Sim_Clust_Ordre<-function(TAB_FREQ_CLU,NOM_CLU,TAB_ORDRE,METH = "bray",BINA = F)
 #' @return un code hexadécimal de couleur
 #' @export
 #'
+#' @example #Sans modification de couleur :
+#' hist(rnorm(30),col="cadetblue")
+#' #En modifiant la saturation :
+#' hist(rnorm(30),col=modif_coul("cadetblue",mods=0.1))
+#' hist(rnorm(30),col=modif_coul("cadetblue",mods=0.9))
+#' #En modifiant la clarté :
+#' hist(rnorm(30),col=modif_coul("cadetblue",modv=0.1))
+#' hist(rnorm(30),col=modif_coul("cadetblue",modv=0.9))
+#' #En modifiant la transparence :
+#' hist(rnorm(30),col=modif_coul("cadetblue",alpha=0.1))
+#' hist(rnorm(30),col=modif_coul("cadetblue",alpha=0.9))
 modif_coul<-function(COULEUR,mods=0.5,modv=0.5,modh=0.5,alpha =1){
   RGB<-rgb2hsv(r=matrix(data = c(col2rgb(COULEUR)[1]/255,
                                  col2rgb(COULEUR)[2]/255,
@@ -1936,4 +1915,76 @@ modif_coul<-function(COULEUR,mods=0.5,modv=0.5,modh=0.5,alpha =1){
   newc<-hsv(h2,s2,v2,alpha = alpha)
   return(newc)
 }
+
+#-------------------------- point.plot ---------------------------------------------
+
+#' point.plot
+#'
+#' @description Fait un diagramme en points avec la moyenne et les barres d'erreurs
+#'
+#' @param variable un vecteur avec les valeurs des variables
+#' @param Facteur un facteur donnant les differentes modalites
+#' @param lettres	(facultatif) liste de type c("text","text") qui figurera au dessus des barres
+#' @param type Type de liaison entre les points ("b": points reliés - esp points-ligne;"o": points reliés - pas d'espace; "l": que les lignes;"p" : que les points;"s": en marches
+#' @param ecart (facultatif) type de calcul de la barre d'erreur (sem, IC, sd, var, etc.)
+#' @param ylim	comme pour la fonction plot(), permet de preciser les limites de l'axe des ordonnees
+#' @param ...	possibilite de rajouter des arguments comme col,main,ylab,etc. associees a barplot
+#'
+#' @export
+#'
+#' @details Co-écrite avec Julie Chenot!
+#'
+#' @example #Donnees
+#' biomasse<-c(rnorm(35,20,5),rnorm(35,15,3),rnorm(35,5,3))
+#' traitement<-factor(rep(c("T1","T2","T3"),each=35))
+#' #Graphique de base
+#' point.plot(variable = biomasse,Facteur = traitement)
+#' #En changeant les barres d'erreurs
+#' point.plot(biomasse,traitement,ecart=sd)
+#' #En ajoutant les lettres de post-hoc
+#' point.plot(biomasse,traitement,lettres=c("a","ab","b"))
+#' #En changeant des parametres classiques de barplot...
+#' point.plot(biomasse,traitement,,lettres=c("a","ab","b"),
+#'            col=c("cadetblue"),
+#'            xlab="Traitements herbicides",ylab="Biomasse",font.lab=3,
+#'            main="Efficacite des traitement",pch=16,type="b",lty=3,lwd=4,cex=3)
+#' #Si on veut ajouter à un graphe existant..
+#' point.plot(biomasse/2,traitement,lettres=c("a","ab","b"),
+#'            col=c("darkolivegreen"),pch=16,add="TRUE")
+point.plot<-function(variable,Facteur,lettres=c(""),type="p",ecart="sem",ylim="NP",xlim="NP",add="FALSE",...)
+{
+  errors.bars<-function(yv,z,nn,lettres,YL)
+  {
+    xv<-c(1:length(yv))
+    if(add=="TRUE") {points(xv,yv,ylim=YL,type=type,...)} else {
+      plot(yv,type=type,xlim=XL,ylim=YL,xaxt='n',...)}
+    g<-(max(xv,na.rm=T)-min(xv,na.rm=T))/50
+    for(i in 1:length(xv))
+    {
+      lines(c(xv[i],xv[i]),c(yv[i]+z[i],yv[i]-z[i]))
+      lines(c(xv[i]-g,xv[i]+g),c(yv[i]+z[i],yv[i]+z[i]))
+      lines(c(xv[i]-g,xv[i]+g),c(yv[i]-z[i],yv[i]-z[i]))
+      text(xv[i],(yv[i]+z[i]+0.07*max(yv,na.rm=T)),lettres[i])
+    }
+    axis(side = 1,at = xv,labels = labels)
+
+  }
+  meandon<-tapply(variable,Facteur,mean,na.rm=T)
+  sem<-function(x)
+  {
+    sqrt(var(x,na.rm=T))/sqrt(length(x))
+  }
+  IC<-function(x)
+  {
+    qt(0.975,(length(x)-1))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)
+  }
+  ecartdon<-tapply(variable,Facteur,ecart)
+  ybar<-as.vector(meandon)
+  se<-as.vector(ecartdon)
+  labels<-as.character(levels(Facteur))
+  XL=if(length(xlim)==1) c(0.5,length(ybar)+0.5) else xlim
+  YL=if(length(ylim)==1) c(0,(1.25*max(ybar,na.rm=T)+max(se,na.rm=T))) else ylim
+  errors.bars(ybar,se,labels,lettres,YL=YL)
+}
+
 
