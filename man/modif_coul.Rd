@@ -23,3 +23,17 @@ un code hexadécimal de couleur
 \description{
 Permet de modifier des couleurs
 }
+\examples{
+#Sans modification de couleur :
+hist(rnorm(30),col="cadetblue")
+#En modifiant la saturation :
+hist(rnorm(30),col=modif_coul("cadetblue",mods=0.1))
+hist(rnorm(30),col=modif_coul("cadetblue",mods=0.9))
+#En modifiant la clarté :
+hist(rnorm(30),col=modif_coul("cadetblue",modv=0.1))
+hist(rnorm(30),col=modif_coul("cadetblue",modv=0.9))
+#En modifiant la transparence :
+hist(rnorm(30),col=modif_coul("cadetblue",alpha=0.1))
+hist(rnorm(30),col=modif_coul("cadetblue",alpha=0.9))
+
+}

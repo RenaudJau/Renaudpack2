@@ -1891,7 +1891,7 @@ Sim_Clust_Ordre<-function(TAB_FREQ_CLU,NOM_CLU,TAB_ORDRE,METH = "bray",BINA = F)
 #' @return un code hexadécimal de couleur
 #' @export
 #'
-#' @example #Sans modification de couleur :
+#' @examples #Sans modification de couleur :
 #' hist(rnorm(30),col="cadetblue")
 #' #En modifiant la saturation :
 #' hist(rnorm(30),col=modif_coul("cadetblue",mods=0.1))
@@ -1902,6 +1902,7 @@ Sim_Clust_Ordre<-function(TAB_FREQ_CLU,NOM_CLU,TAB_ORDRE,METH = "bray",BINA = F)
 #' #En modifiant la transparence :
 #' hist(rnorm(30),col=modif_coul("cadetblue",alpha=0.1))
 #' hist(rnorm(30),col=modif_coul("cadetblue",alpha=0.9))
+#'
 modif_coul<-function(COULEUR,mods=0.5,modv=0.5,modh=0.5,alpha =1){
   RGB<-rgb2hsv(r=matrix(data = c(col2rgb(COULEUR)[1]/255,
                                  col2rgb(COULEUR)[2]/255,
@@ -1934,7 +1935,7 @@ modif_coul<-function(COULEUR,mods=0.5,modv=0.5,modh=0.5,alpha =1){
 #'
 #' @details Co-écrite avec Julie Chenot!
 #'
-#' @example #Donnees
+#' @examples #Donnees
 #' biomasse<-c(rnorm(35,20,5),rnorm(35,15,3),rnorm(35,5,3))
 #' traitement<-factor(rep(c("T1","T2","T3"),each=35))
 #' #Graphique de base
@@ -1951,6 +1952,7 @@ modif_coul<-function(COULEUR,mods=0.5,modv=0.5,modh=0.5,alpha =1){
 #' #Si on veut ajouter à un graphe existant..
 #' point.plot(biomasse/2,traitement,lettres=c("a","ab","b"),
 #'            col=c("darkolivegreen"),pch=16,add="TRUE")
+#'
 point.plot<-function(variable,Facteur,lettres=c(""),type="p",ecart="sem",ylim="NP",xlim="NP",add="FALSE",...)
 {
   errors.bars<-function(yv,z,nn,lettres,YL)

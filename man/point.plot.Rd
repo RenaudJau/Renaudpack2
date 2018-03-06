@@ -28,3 +28,23 @@ Fait un diagramme en points avec la moyenne et les barres d'erreurs
 \details{
 Co-écrite avec Julie Chenot!
 }
+\examples{
+#Donnees
+biomasse<-c(rnorm(35,20,5),rnorm(35,15,3),rnorm(35,5,3))
+traitement<-factor(rep(c("T1","T2","T3"),each=35))
+#Graphique de base
+point.plot(variable = biomasse,Facteur = traitement)
+#En changeant les barres d'erreurs
+point.plot(biomasse,traitement,ecart=sd)
+#En ajoutant les lettres de post-hoc
+point.plot(biomasse,traitement,lettres=c("a","ab","b"))
+#En changeant des parametres classiques de barplot...
+point.plot(biomasse,traitement,,lettres=c("a","ab","b"),
+           col=c("cadetblue"),
+           xlab="Traitements herbicides",ylab="Biomasse",font.lab=3,
+           main="Efficacite des traitement",pch=16,type="b",lty=3,lwd=4,cex=3)
+#Si on veut ajouter à un graphe existant..
+point.plot(biomasse/2,traitement,lettres=c("a","ab","b"),
+           col=c("darkolivegreen"),pch=16,add="TRUE")
+
+}
