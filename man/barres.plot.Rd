@@ -34,10 +34,13 @@ barres.plot(biomasse,traitement,ecart=sd)
 #En ajoutant les lettres de post-hoc
 barres.plot(biomasse,traitement,lettres=c("a","ab","b"))
 #En changeant des parametres classiques de barplot...
-barres.plot(biomasse,traitement,,lettres=c("a","ab","b"),
+barres.plot(biomasse,traitement,lettres=c("a","ab","b"),
 col=c("cadetblue","gold","orange"),
 xlab="Traitements herbicides",ylab="Biomasse",font.lab=3,
 main="Efficacite des traitement")
+#Pour Julie.., si on veut changer l'ordre des traitements, il faut reprendre la fonction factor()
+traitement<-factor(traitement,levels=c("T3","T1","T2"))
+barres.plot(biomasse,traitement)
 
 }
 \seealso{

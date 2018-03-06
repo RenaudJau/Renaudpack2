@@ -20,6 +20,10 @@ point.plot(variable, Facteur, lettres = c(""), type = "p", ecart = "sem",
 
 \item{ylim}{comme pour la fonction plot(), permet de preciser les limites de l'axe des ordonnees}
 
+\item{xlim}{comme pour la fonction plot(), permet de preciser les limites de l'axe des abscisses}
+
+\item{add}{si jamais on veut que ça soit rajouté sur un graphique existant, il faut mettre "TRUE"}
+
 \item{...}{possibilite de rajouter des arguments comme col,main,ylab,etc. associees a barplot}
 }
 \description{
@@ -39,7 +43,7 @@ point.plot(biomasse,traitement,ecart=sd)
 #En ajoutant les lettres de post-hoc
 point.plot(biomasse,traitement,lettres=c("a","ab","b"))
 #En changeant des parametres classiques de barplot...
-point.plot(biomasse,traitement,,lettres=c("a","ab","b"),
+point.plot(biomasse,traitement,lettres=c("a","ab","b"),
            col=c("cadetblue"),
            xlab="Traitements herbicides",ylab="Biomasse",font.lab=3,
            main="Efficacite des traitement",pch=16,type="b",lty=3,lwd=4,cex=3)

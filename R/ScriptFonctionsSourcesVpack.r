@@ -121,10 +121,13 @@ rar.rm<-function(tableau.AD,n)
 #' #En ajoutant les lettres de post-hoc
 #' barres.plot(biomasse,traitement,lettres=c("a","ab","b"))
 #' #En changeant des parametres classiques de barplot...
-#' barres.plot(biomasse,traitement,,lettres=c("a","ab","b"),
+#' barres.plot(biomasse,traitement,lettres=c("a","ab","b"),
 #' col=c("cadetblue","gold","orange"),
 #' xlab="Traitements herbicides",ylab="Biomasse",font.lab=3,
 #' main="Efficacite des traitement")
+#' #Pour Julie.., si on veut changer l'ordre des traitements, il faut reprendre la fonction factor()
+#' traitement<-factor(traitement,levels=c("T3","T1","T2"))
+#' barres.plot(biomasse,traitement)
 #'
 barres.plot<-function(variable,Facteur,lettres=c(""),ecart="sem",ylim="NP",...)
 {
@@ -1929,6 +1932,8 @@ modif_coul<-function(COULEUR,mods=0.5,modv=0.5,modh=0.5,alpha =1){
 #' @param type Type de liaison entre les points ("b": points reliés - esp points-ligne;"o": points reliés - pas d'espace; "l": que les lignes;"p" : que les points;"s": en marches
 #' @param ecart (facultatif) type de calcul de la barre d'erreur (sem, IC, sd, var, etc.)
 #' @param ylim	comme pour la fonction plot(), permet de preciser les limites de l'axe des ordonnees
+#' @param xlim	comme pour la fonction plot(), permet de preciser les limites de l'axe des abscisses
+#' @param add si jamais on veut que ça soit rajouté sur un graphique existant, il faut mettre "TRUE"
 #' @param ...	possibilite de rajouter des arguments comme col,main,ylab,etc. associees a barplot
 #'
 #' @export
@@ -1945,7 +1950,7 @@ modif_coul<-function(COULEUR,mods=0.5,modv=0.5,modh=0.5,alpha =1){
 #' #En ajoutant les lettres de post-hoc
 #' point.plot(biomasse,traitement,lettres=c("a","ab","b"))
 #' #En changeant des parametres classiques de barplot...
-#' point.plot(biomasse,traitement,,lettres=c("a","ab","b"),
+#' point.plot(biomasse,traitement,lettres=c("a","ab","b"),
 #'            col=c("cadetblue"),
 #'            xlab="Traitements herbicides",ylab="Biomasse",font.lab=3,
 #'            main="Efficacite des traitement",pch=16,type="b",lty=3,lwd=4,cex=3)
