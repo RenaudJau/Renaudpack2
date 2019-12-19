@@ -4,8 +4,13 @@
 \alias{Couleur_continue}
 \title{Couleur continue}
 \usage{
-Couleur_continue(VAR, COLORS = c("Red", "Blue"), minVAR = "def",
-  maxVAR = "def", nombre = 100)
+Couleur_continue(
+  VAR,
+  COLORS = c("Red", "Blue"),
+  minVAR = "def",
+  maxVAR = "def",
+  nombre = 100
+)
 }
 \arguments{
 \item{VAR}{un vecteur}

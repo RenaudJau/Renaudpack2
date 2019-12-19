@@ -22,4 +22,11 @@ Donne les lettres associees a un test post hocc de Tukey effectue apres une anov
 \examples{
 biomasse<-c(rnorm(35,20,5),rnorm(35,15,3),rnorm(35,5,3))
 traitement<-factor(rep(c("T1","T2","T3"),each=35))
+anov<-aov(biomasse~traitement)
+summary(anov)
+# OK, il y a un effet significatif, du coup anovLetters renvoie la liste des lettres...
+lettresPH<-anovLetters(VAR = biomasse,FAC = traitement)
+lettresPH
+# ...que l'on peut utiliser directement sur barres.plot :
+barres.plot(biomasse,traitement,lettres = lettresPH)
 }

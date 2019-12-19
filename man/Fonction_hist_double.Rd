@@ -4,8 +4,16 @@
 \alias{Fonction_hist_double}
 \title{Double distribution}
 \usage{
-Fonction_hist_double(Distribution1, Distribution2, BREAKS, coul1 = 1,
-  coul2 = 2, leg1 = "", leg2 = "", ...)
+Fonction_hist_double(
+  Distribution1,
+  Distribution2,
+  BREAKS,
+  coul1 = 1,
+  coul2 = 2,
+  leg1 = "",
+  leg2 = "",
+  ...
+)
 }
 \arguments{
 \item{Distribution1}{Premiere distribution}

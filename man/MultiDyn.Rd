@@ -4,8 +4,19 @@
 \alias{MultiDyn}
 \title{Tracer la dynamique en multivariee}
 \usage{
-MultiDyn(MultCOO, FACTime, FACT2, Axis = c(1, 2), LTY = 1, CEX = 1,
-  COL = 1, ARR = F, LARR = 0.1, new = "yes", ...)
+MultiDyn(
+  MultCOO,
+  FACTime,
+  FACT2,
+  Axis = c(1, 2),
+  LTY = 1,
+  CEX = 1,
+  COL = 1,
+  ARR = F,
+  LARR = 0.1,
+  new = "yes",
+  ...
+)
 }
 \arguments{
 \item{MultCOO}{Les coordonnees de points sortant d'une analyse multivariee, par exemple si apres AFC sous ade4 (nommee \code{AFC_calc}) : \code{AFC_calc$li} par exemple si apres NMDS sous vegan (nommee \code{NMDS_calc}) : \code{NMDS$points}}

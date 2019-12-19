@@ -4,8 +4,7 @@
 \alias{better_arrows}
 \title{Trace des fleches suite a une ACP}
 \usage{
-better_arrows(ANALYSE, coef = 1, length = 0.1, angle = 15, col_text = 1,
-  ...)
+better_arrows(ANALYSE, coef = 1, length = 0.1, angle = 15, col_text = 1, ...)
 }
 \arguments{
 \item{ANALYSE}{objets issues d'una ACP avec dudi.pca (ade4)}

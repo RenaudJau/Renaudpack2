@@ -4,10 +4,26 @@
 \alias{structure.plotV2}
 \title{structure plot version 2}
 \usage{
-structure.plotV2(INDICE, FACTOR, MULTI = T, MTITLE = "", ABMAX = 5,
-  col1 = "grey60", col2 = "white", col3 = "red", col4 = "orange",
-  noms = "T", cex_noms = 1, erreur = "sem", w_err = 1, sp_star = 1,
-  adj_meth = "BH", stars = "T", BASE = T, ...)
+structure.plotV2(
+  INDICE,
+  FACTOR,
+  MULTI = T,
+  MTITLE = "",
+  ABMAX = 5,
+  col1 = "grey60",
+  col2 = "white",
+  col3 = "red",
+  col4 = "orange",
+  noms = "T",
+  cex_noms = 1,
+  erreur = "sem",
+  w_err = 1,
+  sp_star = 1,
+  adj_meth = "BH",
+  stars = "T",
+  BASE = T,
+  ...
+)
 }
 \arguments{
 \item{INDICE}{An object issued from \code{\link{ComStructIndices}} function}

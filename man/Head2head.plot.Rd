@@ -4,8 +4,15 @@
 \alias{Head2head.plot}
 \title{Plot en tete a tete}
 \usage{
-Head2head.plot(TABL, FACTEUR, col1 = 2, col2 = 3, cex_noms = 1,
-  erreur = "sem", adj_meth = "BH")
+Head2head.plot(
+  TABL,
+  FACTEUR,
+  col1 = 2,
+  col2 = 3,
+  cex_noms = 1,
+  erreur = "sem",
+  adj_meth = "BH"
+)
 }
 \arguments{
 \item{TABL}{un tableau de donnees avec les variables colonnes}

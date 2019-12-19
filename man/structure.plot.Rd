@@ -4,9 +4,20 @@
 \alias{structure.plot}
 \title{structure community plots}
 \usage{
-structure.plot(INDICE, FACTOR, MULTI = T, MTITLE = "", ABMAX = 5,
-  col1 = "grey60", col2 = "white", col3 = "red", col4 = "orange",
-  noms = "T", cex_noms = 1, ...)
+structure.plot(
+  INDICE,
+  FACTOR,
+  MULTI = T,
+  MTITLE = "",
+  ABMAX = 5,
+  col1 = "grey60",
+  col2 = "white",
+  col3 = "red",
+  col4 = "orange",
+  noms = "T",
+  cex_noms = 1,
+  ...
+)
 }
 \arguments{
 \item{INDICE}{An object issued from \code{\link{ComStructIndices}} function}

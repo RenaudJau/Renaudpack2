@@ -4,9 +4,21 @@
 \alias{multivar.polyg}
 \title{multivar.polyg}
 \usage{
-multivar.polyg(ANAcoo, FAC, pch = 1, col_dot = 1, col_fill = NA,
-  col_text = 1, col_bord = 1, cex_lab = 1, dot = "yes", lab = "yes",
-  new = "yes", sep = "no", ...)
+multivar.polyg(
+  ANAcoo,
+  FAC,
+  pch = 1,
+  col_dot = 1,
+  col_fill = NA,
+  col_text = 1,
+  col_bord = 1,
+  cex_lab = 1,
+  dot = "yes",
+  lab = "yes",
+  new = "yes",
+  sep = "no",
+  ...
+)
 }
 \arguments{
 \item{ANAcoo}{coordonnees des points d'une analyse multivariees (__$points pour une NMDS, __$li pour une AFC, etc.)}

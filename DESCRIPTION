@@ -8,7 +8,7 @@ Maintainer: Renaud <renaud.jaunatre@irstea.fr>
 Description: Un peu de tout j'ai dit...
 License: GPL-2
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 7.0.2
 Encoding: UTF-8
 Imports: ade4,
     vegan,

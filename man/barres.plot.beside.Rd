@@ -4,9 +4,19 @@
 \alias{barres.plot.beside}
 \title{barres.plot, mais en parallele}
 \usage{
-barres.plot.beside(VARI, FAC1, FAC2, lettres = c(""), etoiles = c(""),
-  ecart = "sem", POSI = "none", ylim = "NP", cex.let = 1, srt.let = 0,
-  ...)
+barres.plot.beside(
+  VARI,
+  FAC1,
+  FAC2,
+  lettres = c(""),
+  etoiles = c(""),
+  ecart = "sem",
+  POSI = "none",
+  ylim = "NP",
+  cex.let = 1,
+  srt.let = 0,
+  ...
+)
 }
 \arguments{
 \item{VARI}{une liste de valeurs de la variable (vecteur)}

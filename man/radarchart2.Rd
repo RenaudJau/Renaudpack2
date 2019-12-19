@@ -4,12 +4,34 @@
 \alias{radarchart2}
 \title{Diagramme radar avec possibilite de ponderer...}
 \usage{
-radarchart2(df, axistype = 0, seg = 4, pty = 16, pcol = 1:8,
-  plty = 1:6, plwd = 1, pdensity = NULL, pangle = 45, pfcol = NA,
-  cglty = 3, cglwd = 1, cglcol = "navy", axislabcol = "blue",
-  title = "", maxmin = TRUE, na.itp = TRUE, centerzero = FALSE,
-  vlabels = NULL, vlcex = NULL, caxislabels = NULL, calcex = NULL,
-  paxislabels = NULL, palcex = NULL, coef = 1, ...)
+radarchart2(
+  df,
+  axistype = 0,
+  seg = 4,
+  pty = 16,
+  pcol = 1:8,
+  plty = 1:6,
+  plwd = 1,
+  pdensity = NULL,
+  pangle = 45,
+  pfcol = NA,
+  cglty = 3,
+  cglwd = 1,
+  cglcol = "navy",
+  axislabcol = "blue",
+  title = "",
+  maxmin = TRUE,
+  na.itp = TRUE,
+  centerzero = FALSE,
+  vlabels = NULL,
+  vlcex = NULL,
+  caxislabels = NULL,
+  calcex = NULL,
+  paxislabels = NULL,
+  palcex = NULL,
+  coef = 1,
+  ...
+)
 }
 \description{
 Diagramme radar avec possibilite de ponderer...

@@ -4,10 +4,23 @@
 \alias{Time.factor.plot}
 \title{Time.factor.plot}
 \usage{
-Time.factor.plot(TIME, FACTOR, variable, xlab = "TIME", ylab = "variable",
-  pch = c(0), couleur = c(0), lty = c(0), lwd = c(0), xlim = "NP",
-  ylim = "NP", Posit_leg = "topleft", linktyp = "b", etoiles = c(""),
-  ...)
+Time.factor.plot(
+  TIME,
+  FACTOR,
+  variable,
+  xlab = "TIME",
+  ylab = "variable",
+  pch = c(0),
+  couleur = c(0),
+  lty = c(0),
+  lwd = c(0),
+  xlim = "NP",
+  ylim = "NP",
+  Posit_leg = "topleft",
+  linktyp = "b",
+  etoiles = c(""),
+  ...
+)
 }
 \arguments{
 \item{TIME}{un vecteur comportant les donnees "temps" ou toute autre variable quantitative qui sera tracee en abscisse}

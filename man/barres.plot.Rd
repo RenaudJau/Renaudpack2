@@ -4,8 +4,14 @@
 \alias{barres.plot}
 \title{Diagramme en barre}
 \usage{
-barres.plot(variable, Facteur, lettres = c(""), ecart = "sem",
-  ylim = "NP", ...)
+barres.plot(
+  variable,
+  Facteur,
+  lettres = c(""),
+  ecart = "sem",
+  ylim = "NP",
+  ...
+)
 }
 \arguments{
 \item{variable}{un vecteur avec les valeurs des variables}
