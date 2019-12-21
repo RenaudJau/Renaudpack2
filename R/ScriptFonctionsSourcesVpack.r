@@ -2224,3 +2224,35 @@ Diss_Ref_Plot <- function(RELEVES, REF, DISTANCES,
   }
 }
 
+
+#' Replace NA by mean
+#' 
+#' @description replace NA value by the mean of the column
+#'
+#' @param TAB a table with numeric values with possible NAs
+#'
+#' @return the same table as TAB but without anymore NA values
+#' 
+#' @examples #Le tableau pour tester :
+#' var1<-c(8,4,5,6,NA)
+#' var2<-c(1,NA,2,1,3)
+#' var3<-c(NA,11,10,NA,12)
+#' tab_essai<-data.frame(var1,var2,var3)
+#' 
+#' #L'utilisation de la fonction :
+#' tab_essai_new<-RepNAbyMean(tab_essai)
+RepNAbyMean<-function(TAB)
+{
+  meancol<-apply(TAB,2,function(x) mean(x,na.rm=T)) #calcul des moyennes par colonnes
+  tab_new<-data.frame(apply(TAB,c(1,2),function(x) x=0)) #création d'un nouveau tableau de m?me dimension avec que des 0
+  for (i in 1:ncol(TAB))
+  {
+    tab_new[,i]<-ifelse(is.na(TAB[,i])==T,meancol[i],TAB[,i])
+    #Appliquer à chaque ligne le remplacement des valeurs NA par la valeur de meancol correspondant
+  }
+  tab_new<-tab_new
+}
+
+
+
+
