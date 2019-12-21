@@ -4,12 +4,14 @@
 \alias{rar.rm}
 \title{Suppression d'especes rares}
 \usage{
-rar.rm(tableau.AD, n)
+rar.rm(tableau.AD, n = 1, ABUN = 1e-06)
 }
 \arguments{
 \item{tableau.AD}{un tableau de contingence}
 
 \item{n}{un nombre minimal d'occurence}
+
+\item{ABUN}{une abondance minimale pour prise en compte de l'espèce}
 }
 \value{
 le meme taleau de contingence, mais sans les especes dont le nombre d'occurence est inferieur a n
@@ -17,7 +19,29 @@ le meme taleau de contingence, mais sans les especes dont le nombre d'occurence 
 \description{
 Supprime les especes n'ayant pas un certain nombre d'occurences
 }
+\details{
+!Nouveautés! Nouvel argument ABUN qui permet de choisir non plus sur un nombre d'occurence mais sur une valeur d'abondance (fréquence, recouvrement, etc.) minimale dans tout le tableau, voir l'exemple pour plus de clarté.
+}
 \examples{
-#a construire...
-
+#' # Exemple avec les donnÃ©es "dune" de vegan
+library(vegan)
+data(dune)
+ncol(dune)
+# Il y a 30 espÃ¨ces..
+# Juste pour voir le nombre d'occurence des espÃ¨ces
+PA <- data.frame(apply(dune, c(1, 2), function(x) if (x != 0) 1  else 0))
+apply(PA,2,sum)
+# Il y a 3 espÃ¨ces dans 1 seul relevÃ©s et 5 dans moins de 3 relevÃ©s
+dune_ocu2 <- rar.rm(tableau.AD = dune, n = 2)
+ncol(dune_ocu2) #3 espÃ¨ces on bien Ã©tÃ© retirÃ©es
+dune_ocu3 <- rar.rm(tableau.AD = dune, n = 3)
+ncol(dune_ocu3) #5 espÃ¨ces on bien Ã©tÃ© retirÃ©es
+# Juste pour voir le nombre maximal d'abondance par espÃ¨ce :
+apply(dune,2,max)
+# On voit qu'il y a 5 espÃ¨ces qui ont des abondances max qui sont infÃ©rieures Ã  3
+dune_abun3 <- rar.rm(tableau.AD = dune,ABUN = 3)
+ncol(dune_abun3) # 5 espÃ¨ces ont bien Ã©tÃ© retirÃ©es
+# PossibilitÃ© de combiner les 2 :
+dune_combi <- rar.rm(tableau.AD = dune, n = 2, ABUN = 3)
+ncol(dune_combi) #ici Ã§a veut dire qu'il y a seulement 20 espÃ¨ces qui ont au moins 2 relevÃ©s avec des abondances au moins Ã©gal Ã  3.
 }

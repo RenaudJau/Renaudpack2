@@ -81,18 +81,36 @@ IC<-function(x)
 #'
 #' @param tableau.AD un tableau de contingence
 #' @param n un nombre minimal d'occurence
-#'
-#' @export
+#' @param ABUN une abondance minimale pour prise en compte de l'espèce
 #'
 #' @return le meme taleau de contingence, mais sans les especes dont le nombre d'occurence est inferieur a n
-#'
-#' @examples #a construire...
-#'
-rar.rm<-function(tableau.AD,n)
+#' @details !Nouveautés! Nouvel argument ABUN qui permet de choisir non plus sur un nombre d'occurence mais sur une valeur d'abondance (fréquence, recouvrement, etc.) minimale dans tout le tableau, voir l'exemple pour plus de clarté.
+#' @examples #' # Exemple avec les données "dune" de vegan
+#' library(vegan)
+#' data(dune)
+#' ncol(dune)
+#' # Il y a 30 espèces..
+#' # Juste pour voir le nombre d'occurence des espèces
+#' PA <- data.frame(apply(dune, c(1, 2), function(x) if (x != 0) 1  else 0))
+#' apply(PA,2,sum)
+#' # Il y a 3 espèces dans 1 seul relevés et 5 dans moins de 3 relevés
+#' dune_ocu2 <- rar.rm(tableau.AD = dune, n = 2)
+#' ncol(dune_ocu2) #3 espèces on bien été retirées
+#' dune_ocu3 <- rar.rm(tableau.AD = dune, n = 3)
+#' ncol(dune_ocu3) #5 espèces on bien été retirées
+#' # Juste pour voir le nombre maximal d'abondance par espèce :
+#' apply(dune,2,max)
+#' # On voit qu'il y a 5 espèces qui ont des abondances max qui sont inférieures à 3
+#' dune_abun3 <- rar.rm(tableau.AD = dune,ABUN = 3)
+#' ncol(dune_abun3) # 5 espèces ont bien été retirées
+#' # Possibilité de combiner les 2 :
+#' dune_combi <- rar.rm(tableau.AD = dune, n = 2, ABUN = 3)
+#' ncol(dune_combi) #ici ça veut dire qu'il y a seulement 20 espèces qui ont au moins 2 relevés avec des abondances au moins égal à 3.
+rar.rm <- function (tableau.AD, n = 1, ABUN = 0.000001) 
 {
-  tableau.PA<-data.frame(apply(tableau.AD,c(1,2),function(x) if(x>0) 1 else 0))
-  occur<-apply(tableau.PA,2,sum)
-  tableau.AD.wr<-tableau.AD[,occur>=n]
+  tableau.PA <- data.frame(apply(tableau.AD, c(1, 2), function(x) if (x >= ABUN) 1  else 0))
+  occur <- apply(tableau.PA, 2, sum)
+  tableau.AD.wr <- tableau.AD[, occur >= n]
 }
 
 
