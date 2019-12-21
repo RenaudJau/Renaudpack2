@@ -2273,4 +2273,18 @@ RepNAbyMean<-function(TAB)
 
 
 
+#' Passer d'un format d'heure en décimale à du texte d'heure normales
+#'
+#' @param heure_dec heures en décimales
+#'
+#' @return un texte avec l'heure en format horaire du type : "10h07"
+#' @examples Heures(10.11)
+#' Heures(29.9)
+Heures<-function(heure_dec)
+{
+  heures_h<-floor(heure_dec)
+  heures_m<-round(60*(heure_dec-heures_h),0)
+  paste0(heures_h,"h",ifelse(heures_m<10,paste0("0",heures_m),heures_m))
+}
+
 
