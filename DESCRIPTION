@@ -13,4 +13,4 @@ Encoding: UTF-8
 Imports: ade4,
     vegan,
     fmsb,
-    lsmeans
+    emmeans

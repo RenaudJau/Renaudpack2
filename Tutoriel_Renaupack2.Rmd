@@ -1,0 +1,441 @@
+---
+title: "Renaudpack2 - tuto"
+output: 
+  pdf_document: 
+    number_sections: yes
+    toc: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+*Dernière mise à jour : 27-12-2019*
+
+\newpage
+
+# Introduction
+
+Il s'agit d'un tuto pour mes fonctions perso, r?unnies dans le package au doux sobriquet de `Renaudpack2`
+
+Depuis peu l'installation est possible via Github, c'est ultra simple en utilisant une fonction du package `devtools`, qu'il faut donc potentiellement installer si ce n'est déjà fait :
+
+## Pour l'installer 
+
+```{r eval=FALSE}
+install.packages("devtools") 
+#? ne faire que si vous n'avez jamais install? devtools
+library(devtools)
+devtools::install_github("RenaudJau/Renaudpack2")
+```
+
+## Pour le mettre ? jour
+
+```{r eval=FALSE}
+install.packages("devtools")
+#? ne faire que si vous n'avez jamais install? devtools
+
+library(devtools)
+devtools::update_packages("Renaudpack2")
+```
+
+## Pour le charger
+Comme n'importe quel package, avec `library` :
+```{r message=FALSE, warning=FALSE}
+library(Renaudpack2)
+```
+
+
+Si jamais il y a un message d'erreur du style de l'impression ?cran ci-apr?s :
+![](C:/Users/renaud.jaunatre/Documents/A_ANALYSES/ErrorRenaudpack2.png)
+
+Je ne sais pas encore d'o? ?a vient, mais en red?marrant R `Session > Restart R` ou `Ctrl+Shift+F10`, et en refaisant `library(Renaudpack2)` ?a semble fonctionner.
+
+\newpage
+
+# Les fonctions graphiques pour les analyses univari?es
+
+Pour les besoins de ce tuto, on cr?? des fausses donn?es :
+
+```{r}
+biomasse<-c(rnorm(35,20,5),rnorm(35,15,3),rnorm(35,5,3))
+traitement<-factor(rep(c("T1","T2","T3"),each=35))
+```
+
+## Un facteur et des barres d'erreur avec la fonction `barres.plot`
+
+Le graphique de base :
+
+```{r }
+barres.plot(biomasse,traitement)
+```
+
+\newpage
+
+Il y a plusieurs choses que l'on peut modifier pour personaliser son graphique :
+
+* changer le type d'erreur repr?sent?e
+
+* ajouter des lettres d'un test post-hoc
+
+* changer des param?tres classiques de la fonction `barplot`
+
+* changer l'ordre des modalit?s (?a ?a n'est pas sp?cifique ? la fonction `barres.plot`)
+
+```{r fig.height=10, fig.width=14}
+par(mfrow=c(2,2)) #pour avoir 4 graphiques sur une m?me fen?tre
+barres.plot(biomasse,traitement,ecart=sd)
+#erreur standard par d?faut, ici ?cart-type
+barres.plot(biomasse,traitement,lettres=c("a","ab","b"))
+barres.plot(biomasse,traitement,lettres=c("a","ab","b"),
+col=c("cadetblue","gold","orange"),
+xlab="Traitements herbicides",ylab="Biomasse",font.lab=3,
+main="Efficacite des traitement")
+traitement2<-factor(traitement,levels=c("T3","T1","T2"))
+barres.plot(biomasse,traitement2)
+par(mfrow=c(1,1)) #Pour restaurer les param?tres graphiques
+```
+
+\newpage
+
+## Pour rajouter les lettres des post-hoc avec la fonction `anovLetters`
+
+Si vous ne voulez pas vous emb?ter ? calculer vous m?me les lettres des tests post-hoc, et si et uniquement si vous ?tes dans les conditions d'utilisation d'une ANOVA ? un facteur, alors on peut faire ?a :
+
+```{r}
+anov<-aov(biomasse~traitement)
+summary(anov)
+```
+
+OK, il y a un effet significatif, du coup `anovLetters` renvoie la liste des lettres...
+
+```{r}
+lettresPH<-anovLetters(VAR = biomasse,FAC = traitement)
+lettresPH
+```
+
+...que l'on peut utiliser directement sur `barres.plot` :
+
+```{r}
+barres.plot(biomasse,traitement,lettres = lettresPH)
+```
+
+*Note : possibilit? de changer le seuil alpha en utilisant l'argument `ALPHA`.
+
+\newpage
+
+## Deux facteurs et des barres d'erreur avec la fonction `barres.plot.beside`
+
+Pour les besoins de ce tuto, on cr?? des fausses donn?es, avec 2 facteurs, l'?ge et le sexe, et une variable, la taille :
+
+```{r}
+Age=factor(rep(c(2,10,20,30),each=10))
+Sexe=factor(rep(rep(c("Homme","Femme"),5),4))
+Taille=c(rnorm(5,60,7),rnorm(5,55,7),rnorm(5,145,15),rnorm(5,129,15),rnorm(5,175,15),
+         rnorm(5,165,15),rnorm(5,175,15),rnorm(5,165,15))
+```
+
+En gros ?a donne ?a :
+
+```{r echo=FALSE, warning=FALSE}
+library(knitr)
+kable(head(data.frame(Age,Sexe,Taille)))
+```
+
+Le graphique de base :
+
+```{r}
+barres.plot.beside(Taille,Sexe,Age)
+```
+
+\newpage
+
+On peut aussi modifier quelques petits trucs :
+
+* si on inverse les facteurs, avec des couleurs
+```{r out.height="25%",fig.height=3.2,fig.width=5}
+barres.plot.beside(Taille,Age,Sexe,col=c("burlywood1","darkseagreen3"))
+```
+
+* avec les annotations qui vont bien
+
+Attention, les lettres et ?toiles sont ? d?finir soit m?me, c-?-d apr?s tests statistiques, ici pour l'exemple, c'est de l'al?atoire...), et avec des couleurs simples (mais moches...)
+```{r out.height="25%",fig.height=3.2,fig.width=5}
+barres.plot.beside(Taille,Sexe,Age,POSI="bottom",
+lettres=c("a","b","c","c","a","b","c","c"),
+                   etoiles=c("*","***"),ylab="Taille (cm)",col=2:5)
+```
+
+\newpage
+
+* avec des couleurs choisies avec la fonction `colorRampPalette` et une l?gende
+```{r out.height="20%",fig.height=3,fig.width=10}
+par(mfrow=c(1,2))
+coul<-c(colorRampPalette(colors=c("olivedrab1", "grey22"))(4))
+barres.plot.beside(Taille,Sexe,Age,POSI="bottom",
+                   lettres=c("a","b","c","c","a","b","c","c"),
+                   etoiles=c("*","***"),col=coul,ylab="Taille (cm)")
+plot(1,type="n",axes = F,ann = F)
+legend("topleft",levels(Age),fill=coul,bty="n")
+```
+
+* avec des couleurs pour chaque combinaison de modalit?s
+```{r  out.height="30%",fig.height=5,fig.width=12}
+par(mfrow=c(1,2))
+coul2<-c(colorRampPalette(colors=c("lightgoldenrod1", "gold4"))(4),
+         colorRampPalette(colors=c("salmon", "firebrick4"))(4))
+barres.plot.beside(Taille,Sexe,Age,POSI="bottom",
+                   lettres=c("a","b","c","c","a","b","c","c"),
+                   etoiles=c("*","***"),col=coul2,ylab="Taille (cm)")
+plot(1,type="n",axes = F,ann = F)
+legend("topleft",paste(rep(levels(Sexe),each=length(levels(Age))),
+                       rep(levels(Age),2),sep=" "),fill=coul2,bty="n")
+```
+
+\newpage
+
+
+## Faire un tableau r?capitulatif avec `Tableau_recap`
+
+Cette fonction n'est pas graphique, elle donne les informations de `barres.plot` sous forme d'un tableau. Elle a peu d'utilit? en dehors d'un document Rmarkdown. 
+
+```{r}
+Tableau_recap(VAR = biomasse,FAC = traitement,ROUND = 2)
+```
+
+Pour que ce soit plus joli, il est cosneill? d'utiliser la fonction `kable`du package `knitr` (pour l'installer : `install.packages("knitr")`).
+
+```{r}
+kable(Tableau_recap(VAR = biomasse,FAC = traitement,ROUND = 2))
+```
+
+Si on fait un test posthoc, on peut rajouter les lettres dans le tableau :
+
+```{r}
+anov<-aov(biomasse~traitement)
+summary(anov)
+TukeyHSD(anov)
+#les lettres sont donc a, b et c :
+kable(Tableau_recap(VAR = biomasse,FAC = traitement,ROUND = 2,
+              LETTRES = c("a","b","c")))
+```
+
+\newpage
+
+## Des s?ries temporelles avec `Time.factor.plot`
+
+Pour les besoins de ce tuto, on cr?? des fausses donn?es :
+
+```{r}
+tim<-rep(c(1:4),each=6)
+fac<-factor(rep(rep(c("A","B"),each=3),4))
+vari<-c(rnorm(3,5,2),rnorm(3,3,2),rnorm(3,3,2),rnorm(3,8,2),
+        rnorm(3,8,2),rnorm(3,10,2),rnorm(3,16,2),rnorm(3,12,2))
+```
+
+En gros ?a donne ?a :
+
+```{r echo=FALSE}
+kable(head(data.frame(tim,fac,vari)))
+```
+
+Utilisation de la fonction :
+*Pourquoi ce message d'erreur? Bonne question.. ? r?soudre..*
+
+```{r fig.height=4, out.height="30%"}
+Time.factor.plot(tim,fac,vari,etoiles=c("*","***","","***"),
+                 pch = c(15,16),couleur = c("darkolivegreen","firebrick"),
+                 lty = c(1,2))
+```
+
+## Des jolies couleurs avec les fonctions `Couleur_continue` et  `modif_coul`
+
+`Couleur_continue` permet de transformer une variable en palette de couleur, utile pour ajouter une 'dimension' ? un plot en 2D
+
+Par exemple, si on a des donn?es (fausses ici..) avec la couverture v?g?tale en fonction de l'altitude, et une information sur la taille des plantes :
+
+```{r echo=FALSE}
+taille<-c(89.2,18,40.1,90.6,86.0,83.9,90.6,84.9,56,88.4,74.1,65.6,
+          49.0,33.0,22.8,16.3,11.2,9.7,10,6.8,36,2.9,7.8,8.5,5.9,2.9,0.2,28,11.5,15.7)
+recouvrement<-c(99,98,99,96,96,96,96,92,92,93,90,95,90,85,80,71,75,63,
+                54,49,36,21,7,12,19,32,46,60,71,88)
+altitude<-c(467,1257,1955,2287,1920,1397,1002,1403,1816,2257,2438,2641,
+            2821,2287,1961,2292,2624,2327,2630,2769,2839,2787,2752,2385,
+            2141,2037,1688,1484,1554,1374)
+kable(head(data.frame(taille,recouvrement,altitude)))
+```
+
+On peut cr?er une couleur pour chaque valeur de taille (ici avec des couleurs plus froides pour les tailles les plus petites) :
+
+```{r }
+coul_taille<-Couleur_continue(VAR = taille,COLORS = c("cadetblue","firebrick"))
+coul_taille
+```
+
+Ces couleurs (en code h?xad?cimal) peuvent ?tre utilis?es dans un graphique, avec la possibilit? de changer les couleurs comme on veut :
+
+```{r out.height="50%",fig.height=4,fig.width=10}
+par(mfrow=c(1,2))
+plot(x = altitude, y = recouvrement, pch=16, cex=2, col=coul_taille)
+plot(x = altitude, y = recouvrement, pch=16, cex=2, 
+     col=Couleur_continue(taille,COLORS=c("Orange","Green")))
+```
+
+
+```{r out.height="25%",fig.height=3.2,fig.width=5}
+
+```
+
+\newpage
+
+La fonction `modif_coul` permet de modifier une couleur existante :
+
+Par exemple, en partant de la couleur `cadetblue` (qui est un bleu pastel), on peut :
+
+* modifier la saturation, sous 0.5 ?a d?sature, au dessus, ?a sature
+
+* modifier la brillance, sous 0.5 ?a fonce, au dessus, ?a ?claircit
+
+* modifier la teinte, ?a tourne en rond..
+
+* modifier la transparence sous 1, ?a devient transparent
+
+```{r out.height="80%",fig.height=7,fig.width=10}
+par(mfrow=c(3,2))
+plot(x = altitude, y = recouvrement, pch = 16, cex = 8, col = "cadetblue", 
+     main = 'col = "cadetblue"')
+plot(1,type="n",axes = F,ann = F) #juste pour un graphique vide..
+plot(x = altitude, y = recouvrement, pch = 16, cex = 8, 
+     col = modif_coul(COULEUR = "cadetblue",mods = 0.2), main = "mods = 0.2")
+plot(x = altitude, y = recouvrement, pch = 16, cex = 8, 
+     col = modif_coul(COULEUR = "cadetblue",modv = 0.9), main = "modv = 0.9")
+plot(x = altitude, y = recouvrement, pch = 16, cex = 8, 
+     col = modif_coul(COULEUR = "cadetblue",modh = 0.8), main = "modh = 0.8")
+plot(x = altitude, y = recouvrement, pch = 16, cex = 8, 
+     col = modif_coul(COULEUR = "cadetblue",alpha = 0.5), main = "alpha = 0.5")
+
+```
+
+\newpage
+
+On peut aussi combiner les deux fonctions :
+
+
+```{r}
+coul_taille_transp <- sapply(coul_taille, function(x) modif_coul(x, alpha = 0.5))
+plot(x = altitude, y = recouvrement, pch=16, cex=8, col=coul_taille_transp)
+```
+
+
+
+\newpage
+
+## Des diagrammes en barres mais avec des points avec `point.plot`
+
+Quasi identique ? l'utilisation de `barres.plot`.. Le graphique de base :
+
+```{r }
+point.plot(biomasse,traitement)
+```
+
+\newpage
+
+Il y a plusieurs choses que l'on peut modifier pour personaliser son graphique :
+
+* changer le type d'erreur repr?sent?e
+
+* ajouter des lettres d'un test post-hoc
+
+* changer des param?tres classiques de la fonction `barplot`
+
+* changer l'ordre des modalit?s (?a ?a n'est pas sp?cifique ? la fonction `point.plot`) et surajouter sur un graphique
+
+```{r fig.height=10, fig.width=14}
+par(mfrow=c(2,2)) #pour avoir 4 graphiques sur une m?me fen?tre
+point.plot(biomasse,traitement,ecart=sd)
+#erreur standard par d?faut, ici ?cart-type
+point.plot(biomasse,traitement,lettres=c("a","ab","b"))
+point.plot(biomasse,traitement,lettres=c("a","ab","b"),
+xlab="Traitements herbicides",ylab="Biomasse",font.lab=3,
+main="Efficacite des traitement")
+traitement2<-factor(traitement,levels=c("T3","T1","T2"))
+point.plot(biomasse,traitement2)
+point.plot(biomasse/2,traitement2, add = TRUE)
+```
+
+\newpage
+
+# Fonctions graphiques pour les analyses multivar?es
+
+## La fonction `multivar.polyg`
+
+La fonction `multivar.polyg` permet de regrouper des points dans une analyse en faisant un polygone autour. On prend
+
+
+\newpage
+
+## La fonction `MultiDyn`
+\newpage
+
+## La fonction `better_arrows`
+\newpage
+
+## La fonction `label.cor`
+\newpage
+
+## La fonction `label.corDCA`
+\newpage
+
+## La fonction `label.corNMDS`
+\newpage
+
+
+
+# Pour de la manipulation de donn?es
+
+## La fonction `BBtransf`
+
+## La fonction `Classes_def`
+
+## La fonction `combin.tab`
+
+## La fonction `combin.tabV0`
+
+# Pour des t?ches tr?s sp?cifiques :
+
+## Autour de l'indice de  l'integrit? de la structure des communaut?s
+
+## La fonction `ComStructIndices`
+
+## La fonction `structure.plot`
+
+## La fonction `structure.plotV2`
+
+## La fonction ``
+
+
+
+``
+``
+
+``
+
+``
+``
+
+``
+
+``
+``
+
+``
+
+``
+``
+
+``
+
+``
+``
+
+``
+
+``
