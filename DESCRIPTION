@@ -13,4 +13,9 @@ Encoding: UTF-8
 Imports: ade4,
     vegan,
     fmsb,
-    emmeans
+    emmeans,
+    multcomp,
+    mvtnorm,
+    survival,
+    TH.data,
+    MASS

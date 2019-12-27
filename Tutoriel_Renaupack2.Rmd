@@ -14,20 +14,21 @@ editor_options:
 
 # Introduction
 
-Il s'agit d'un tuto pour mes fonctions perso, r?unnies dans le package au doux sobriquet de `Renaudpack2`
+Il s'agit d'un tuto pour mes fonctions perso, réunnies dans le package au doux sobriquet de `Renaudpack2`
 
 Depuis peu l'installation est possible via Github, c'est ultra simple en utilisant une fonction du package `devtools`, qu'il faut donc potentiellement installer si ce n'est déjà fait :
+
 
 ## Pour l'installer 
 
 ```{r eval=FALSE}
 install.packages("devtools") 
-#? ne faire que si vous n'avez jamais install? devtools
+#? ne faire que si vous n'avez jamais installé devtools
 library(devtools)
 devtools::install_github("RenaudJau/Renaudpack2")
 ```
 
-## Pour le mettre ? jour
+## Pour le mettre à jour
 
 ```{r eval=FALSE}
 install.packages("devtools")
@@ -45,15 +46,15 @@ library(Renaudpack2)
 
 
 Si jamais il y a un message d'erreur du style de l'impression ?cran ci-apr?s :
-![](C:/Users/renaud.jaunatre/Documents/A_ANALYSES/ErrorRenaudpack2.png)
+![](C:/Users/renaud.jaunatre/Documents/A_ANALYSES/Renaudpack2/ErrorRenaudpack2.png)
 
-Je ne sais pas encore d'o? ?a vient, mais en red?marrant R `Session > Restart R` ou `Ctrl+Shift+F10`, et en refaisant `library(Renaudpack2)` ?a semble fonctionner.
+Je ne sais pas encore d'où ça vient, mais en redémarrant R `Session > Restart R` ou `Ctrl+Shift+F10`, et en refaisant `library(Renaudpack2)` ?a semble fonctionner.
 
 \newpage
 
 # Les fonctions graphiques pour les analyses univari?es
 
-Pour les besoins de ce tuto, on cr?? des fausses donn?es :
+Pour les besoins de ce tuto, on créé des fausses données :
 
 ```{r}
 biomasse<-c(rnorm(35,20,5),rnorm(35,15,3),rnorm(35,5,3))
@@ -367,7 +368,7 @@ point.plot(biomasse/2,traitement2, add = TRUE)
 
 ## La fonction `multivar.polyg`
 
-La fonction `multivar.polyg` permet de regrouper des points dans une analyse en faisant un polygone autour. On prend
+La fonction `multivar.polyg` permet de regrouper des points dans une analyse en faisant un polygone autour. On prends 
 
 
 \newpage
@@ -378,7 +379,103 @@ La fonction `multivar.polyg` permet de regrouper des points dans une analyse en 
 ## La fonction `better_arrows`
 \newpage
 
-## La fonction `label.cor`
+## La fonction `label.corV2`
+
+La fonction `label.corV2` permet de calculer les corrélations des espèces avec les axes et d'afficher seulement les plus corrélées.
+
+Il y a plusieurs arguments obligatoires :
+
+* `COO_ESP` Coordonnées des espèces suites à une ordination, pour les deux premiers axes, après `dudi.pca` et `dudi.coa` c'est `ANALYSE$co[,1:2]`, après `decorana` c'est `ANALYSE$cproj[,1:2]`, après `metaMDS` c'est `ANALYSE$species[,1:2]`, etc.
+* `COO_REL` Coordonnées des relevés suites à une ordination, pour les deux premiers axes, après `dudi.pca` et `dudi.coa` c'est `ANALYSE$li[,1:2]`, après `decorana` c'est `ANALYSE$rproj[,1:2]`, après `metaMDS` c'est `ANALYSE$points[,1:2]`, etc.
+* `RELEVES` les relevés ayant servi à faire l'analyse multivariée
+* `METHOD` Méthode de choix des espèces à afficher, soit `"P"` (défaut) - les espèces dont le p du test de spearman sont inférieures à la valeur de P  sur au moins un axe sont affichées, soit `"RHO"` - les espèces dont le Rho du test de spearman sont supérieur à RHO sur au moins un axe sont affichées, soit `"N_base_P"` - les N espèces dont le P sont les plus faibles sont affichées, soit `"N_base_RHO"` - les N espèces dont les RHO sont les plus fort sont affichées.
+
+Selon la méthode choisie, vous devrez aussi renseigner :
+
+* `P` la p value maximum pour être affichée
+* `RHO` le Rho minimum pour être affichée 
+* `N` le nombre d'espèces à afficher, attention, si des ex-aequo, pour ne pas surcharger, il y a moins d'espèces affichées que le N choisi
+
+Et éventuellement :
+
+* `COEF` un coef multiplicateur (pour exploser ou non la dispersion dans le plan)
+* `ADD` par defaut, créer un graphe seul, si add=T, les noms d'especes sont ajouté au graphe déjà existant
+* `...` d'autres arguments de la fonction `text`
+
+Pour l'exemple, on récupère les données `dune` du package `vegan` et on fait une NMDS :
+
+```{r include=FALSE}
+library(vegan)
+data("dune")
+NMDS <- metaMDS(dune)
+```
+```{r eval=FALSE}
+library(vegan)
+data("dune")
+NMDS <- metaMDS(dune)
+```
+
+\newpage
+
+Usage de la fonction :
+
+* En fonction du p, et sans graphe existant :
+
+```{r fig.height=3, fig.width=5}
+label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+            RELEVES = dune, METHOD = "P", P = 0.05)
+```
+
+* En fonction du rho et avec graphe existant :
+
+```{r fig.height=3, fig.width=5}
+plot(NMDS$points[,1:2])
+label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+            RELEVES = dune, METHOD = "RHO", RHO = 0.5, ADD = T)
+```
+
+\newpage
+
+* Sans graphe précédent, par un nombre d'espèces en fonction du p :
+
+```{r fig.height=3, fig.width=5}
+label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+            RELEVES = dune, METHOD = "N_base_P", N = 10)
+```
+
+* Sans graphe précédent, par un nombre d'espèces en fonction du rho :
+
+```{r fig.height=3, fig.width=5}
+label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+            RELEVES = dune, METHOD = "N_base_RHO", N = 15)
+```
+
+\newpage
+
+* Sans graphe précédent, par un nombre d'espèces en fonction du rho et en utilisant tout un tas d'autres arguments de la fonction `text`:
+
+```{r fig.height=2.5, fig.width=5}
+label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+            RELEVES = dune, METHOD = "N_base_RHO", N = 15, 
+            col="cadetblue", cex=1.5, font = 3)
+```
+
+* Et pour voir les effets de l'argument `COEF` :
+
+```{r fig.height=2.5, fig.width=5}
+plot(NMDS$species, ylim = c(-2, 2), xlim = c(-2,2))
+label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+            RELEVES = dune, METHOD = "N_base_RHO", N = 15, 
+            col="cadetblue", cex=0.5, COEF = 0.5, ADD = T)
+label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+            RELEVES = dune, METHOD = "N_base_RHO", N = 15, 
+            col="cadetblue2", cex=1, COEF = 1.5, ADD = T)
+label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+            RELEVES = dune, METHOD = "N_base_RHO", N = 15, 
+            col="cadetblue4", cex=1.5, COEF = 2, ADD = T)
+
+```
+
 \newpage
 
 ## La fonction `label.corDCA`

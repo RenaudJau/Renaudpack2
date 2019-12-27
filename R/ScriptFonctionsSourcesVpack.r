@@ -1284,7 +1284,8 @@ barres.plot.beside<-function(VARI,FAC1,FAC2,lettres=c(""),
 #'
 #' @return une liste de lettres qui correspondent aux modalites d'un facteur
 #' @export
-#' @import lsmeans
+#' @import emmeans
+#' @import multcomp
 #'
 #' @examples biomasse<-c(rnorm(35,20,5),rnorm(35,15,3),rnorm(35,5,3))
 #' traitement<-factor(rep(c("T1","T2","T3"),each=35))
@@ -2029,6 +2030,10 @@ point.plot<-function(variable,Facteur,lettres=c(""),type="p",ecart="sem",ylim="N
 #' @param BINARY (FALSE by default) If TRUE, data is converted to binary data
 #' @param DUPLICATES (TRUE by default) Are REF plots also included in RELEVES data?
 #' 
+#' @export
+#' 
+#' @import vegan
+#' 
 #' @return \item{Diss_Mean}{average dissimilarity by RELEVES}
 #' @return \item{Diss_Min}{minimal dissimilarity by RELEVES}
 #' @return \item{RelRef_order}{list of REF names in ascending order of dissimilarity for each RELEVES}
@@ -2135,6 +2140,10 @@ DissRef3 <- function (RELEVES, REF, METHOD = "bray", BINARY = FALSE, DUPLICATES 
 #' @param DIST_MIN Minimum distance value to draw a link between REF and RELEVES
 #' @param VAL_DIST Providing or not (TRUE by default) the distance value display
 #' @param DECAL Distance between the printing of the distance and the link
+#' 
+#' @import vegan
+#' 
+#' @export
 #' 
 #' @examples # ------------  Creating the data needed for the example --------------------
 #' library(vegan)
@@ -2251,6 +2260,8 @@ Diss_Ref_Plot <- function(RELEVES, REF, DISTANCES,
 #'
 #' @return the same table as TAB but without anymore NA values
 #' 
+#' @export
+#' 
 #' @examples #Le tableau pour tester :
 #' var1<-c(8,4,5,6,NA)
 #' var2<-c(1,NA,2,1,3)
@@ -2278,6 +2289,9 @@ RepNAbyMean<-function(TAB)
 #' @param heure_dec heures en décimales
 #'
 #' @return un texte avec l'heure en format horaire du type : "10h07"
+#' 
+#' @export
+#' 
 #' @examples Heures(10.11)
 #' Heures(29.9)
 Heures<-function(heure_dec)
@@ -2287,4 +2301,105 @@ Heures<-function(heure_dec)
   paste0(heures_h,"h",ifelse(heures_m<10,paste0("0",heures_m),heures_m))
 }
 
+
+#' Affichage d'espèces correlées
+#' 
+#' @description Calcul les corrélations des espèces avec les axes puis n'affiche que les plus corrélées
+#'
+#' @param COO_ESP Coordonnées des espèces suites à une ordination, pour les deux premiers axes, après dudi.pca et dudi.coa c'est ANALYSE$co[,1:2], après decorana c'est ANALYSE$cproj[,1:2], après metaMDS c'est ANALYSE$species[,1:2], etc.
+#' @param COO_REL Coordonnées des relevés suites à une ordination, pour les deux premiers axes, après dudi.pca et dudi.coa c'est ANALYSE$li[,1:2], après decorana c'est ANALYSE$rproj[,1:2], après metaMDS c'est ANALYSE$points[,1:2], etc.
+#' @param RELEVES les relevés ayant servi à faire l'analyse multivariée
+#' @param METHOD Méthode de choix des espèces à afficher, soit "P" (défaut) - les espèces dont le p du test de spearman sont inférieures à la valeur de P  sur au moins un axe sont affichées, soit "RHO" - les espèces dont le Rho du test de spearman sont supérieur à RHO sur au moins un axe sont affichées, soit "N_base_P" - les N espèces dont le P sont les plus faibles sont affichées, soit "N_base_RHO" - les N espèces dont les RHO sont les plus fort sont affichées.
+#' @param P la p value maximum pour être affichée 
+#' @param RHO le Rho minimum pour être affichée
+#' @param N le nombre d'espèces à afficher, attention, si des ex-aequo, pour ne pas surcharger, il y a moins d'espèces affichées que le N choisi
+#' @param COEF un coef multiplicateur (pour exploser ou non la dispersion dans le plan)
+#' @param ADD par defaut, créer un graphe seul, si add=T, les noms d'especes sont ajouté au graphe déjà existant
+#' @param ... les autres arguments de la fonction text
+#' 
+#' @export
+#' 
+#' @import vegan
+#' 
+#' @examples # téléchargement des données de vegan
+#' data("dune")
+#' NMDS <- metaMDS(dune)
+#' label.corV2(COO_ESP = NMDS$species, COO_REL = NMDS$points, RELEVES = dune, METHOD = "RHO", RHO = 0.5)
+#' # En fonction du p, et sans graphe existant :
+#' label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+#' RELEVES = dune, METHOD = "P", P = 0.05)
+#' # En fonction du rho et avec graphe existant :
+#' plot(NMDS$points[,1:2])
+#' label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+#'             RELEVES = dune, METHOD = "RHO", RHO = 0.5, ADD = T)
+#' Sans graphe précédent, par un nombre d'espèces en fonction du p :
+#' label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+#'             RELEVES = dune, METHOD = "N_base_P", N = 10)
+#' # Sans graphe précédent, par un nombre d'espèces en fonction du rho :
+#' label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+#' RELEVES = dune, METHOD = "N_base_RHO", N = 15)
+#' # Sans graphe précédent, par un nombre d'espèces en fonction du rho et en utilisant tout un tas d'autres arguments de la fonction `text`:
+#' label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+#' RELEVES = dune, METHOD = "N_base_RHO", N = 15, 
+#' col="cadetblue", cex=1.5, font = 3)
+#' # Et pour voir les effets de l'argument `COEF` :
+#' plot(NMDS$species, ylim = c(-2, 2), xlim = c(-2,2))
+#' label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+#'             RELEVES = dune, METHOD = "N_base_RHO", N = 15, 
+#'                         col="cadetblue", cex=0.5, COEF = 0.5, ADD = T)
+#' label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+#'             RELEVES = dune, METHOD = "N_base_RHO", N = 15, 
+#'                         col="cadetblue2", cex=1, COEF = 1.5, ADD = T)
+#' label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
+#'             RELEVES = dune, METHOD = "N_base_RHO", N = 15, 
+#'                         col="cadetblue4", cex=1.5, COEF = 2, ADD = T)
+#'
+label.corV2 <- function(COO_ESP, COO_REL, RELEVES, METHOD = "defaut", P= "defaut", RHO = "defaut", N = "defaut", COEF = 1, ADD = F, ...)
+{
+  
+  ## les indicateurs et messages d'erreurs
+  if(METHOD=="defaut"){warning("Vous n'avez pas choisi de méthode")}
+  if(METHOD=="P" & P=="defaut"){
+    warning("Vous avez choisi la méthode 'P' sans préciser la valeur de 'P'")}
+  if(METHOD=="RHO" & RHO=="defaut"){
+    warning("Vous avez choisi la méthode 'RHO' sans préciser la valeur de 'RHO'")}
+  if(METHOD=="N_base_P" & N=="defaut"){
+    warning("Vous avez choisi la méthode 'N_base_P' sans préciser la valeur de 'N'")}
+  if(METHOD=="N_base_RHO" & N=="defaut"){
+    warning("Vous avez choisi la méthode 'N_base_RHO' sans préciser la valeur de 'N'")} 
+  if(min(colSums(RELEVES), na.rm = T)==0){
+    warning("Au moins une espèce n'a aucune occurence - impossible de calculer les corrélations")}
+  
+  if((METHOD=="defaut") == FALSE & (METHOD=="P" & P=="defaut") == FALSE & (METHOD=="RHO" & RHO=="defaut") == FALSE &    (METHOD=="N_base_P" & N=="defaut") == FALSE & (METHOD=="N_base_RHO" & N=="defaut") == FALSE & (min(colSums(RELEVES), na.rm = T)==0) == FALSE) {
+    ## calculs des corrélations
+    pcorspear1 <- apply(RELEVES, 2,
+                        function(x) cor.test(rank(COO_REL[,1]), rank(x),
+                                             method = "spearman", exact = FALSE)$p.value)
+    pcorspear2 <- apply(RELEVES, 2,
+                        function(x) cor.test(rank(COO_REL[,2]), rank(x),
+                                             method = "spearman", exact = FALSE)$p.value)
+    pmin <- apply(data.frame(pcorspear1, pcorspear2), 1, min, na.rm=T)
+    
+    rhocorspear1 <- apply(RELEVES, 2,
+                          function(x) cor.test(rank(COO_REL[,1]), rank(x),
+                                               method = "spearman", exact = FALSE)$estimate)
+    rhocorspear2 <- apply(RELEVES, 2,
+                          function(x) cor.test(rank(COO_REL[,2]), rank(x),
+                                               method = "spearman", exact = FALSE)$estimate)
+    rhomax <- apply(data.frame(rhocorspear1, rhocorspear2), 1, function(x) max(abs(x), na.rm=T))
+    
+    All <- data.frame(Especes = names(RELEVES), pmin, rankp = rank(pmin, ties.method = "max"),
+                      rhomax, rankrho = rank(-rhomax, ties.method = "max"), COO_ESP) 
+    
+    ## choix des espèces
+    if(METHOD=="P"){Sel <- All[All$pmin<P,]}
+    if(METHOD=="RHO"){Sel <- All[All$rhomax>RHO,]}
+    if(METHOD=="N_base_P"){Sel <- All[All$rankp<=N,]}
+    if(METHOD=="N_base_RHO"){Sel <- All[All$rankrho<=N,]}
+    
+    ## graphique
+    if(ADD == F){plot(COO_REL, type="n")}
+    text(COEF*Sel[,6:7], labels = Sel$Especes, ...)
+  }
+}
 

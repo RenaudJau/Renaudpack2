@@ -4,10 +4,17 @@
 
 #-------- package dependencies -------------
 
-devtools::use_package("ade4","imports")
-devtools::use_package("vegan","imports")
-devtools::use_package("fmsb","imports")
-devtools::use_package("lsmeans","imports")
+library(devtools)
+use_package("ade4","imports")
+use_package("vegan","imports")
+use_package("fmsb","imports")
+use_package("emmeans","imports")
+use_package("multcomp","imports")
+use_package("mvtnorm","imports")
+use_package("survival","imports")
+use_package("TH.data","imports")
+use_package("MASS","imports")
+
 
 #------- datasets -------------------------
 
