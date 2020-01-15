@@ -84,6 +84,7 @@ IC<-function(x)
 #' @param ABUN une abondance minimale pour prise en compte de l'espèce
 #'
 #' @return le meme taleau de contingence, mais sans les especes dont le nombre d'occurence est inferieur a n
+#' @export
 #' @details !Nouveautés! Nouvel argument ABUN qui permet de choisir non plus sur un nombre d'occurence mais sur une valeur d'abondance (fréquence, recouvrement, etc.) minimale dans tout le tableau, voir l'exemple pour plus de clarté.
 #' @examples #' # Exemple avec les données "dune" de vegan
 #' library(vegan)
