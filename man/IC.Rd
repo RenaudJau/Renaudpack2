@@ -17,6 +17,6 @@ Calcul d'un intervalle de confiance a 5 pour cent
 }
 \examples{
 A<-rnorm(45,3,2)
-sem(A)
+IC(A)
 
 }
