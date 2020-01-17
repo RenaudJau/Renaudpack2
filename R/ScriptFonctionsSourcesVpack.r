@@ -65,11 +65,11 @@ sem<-function(x)
 #' @export
 #'
 #' @examples A<-rnorm(45,3,2)
-#' sem(A)
+#' IC(A)
 #'
 IC<-function(x)
 {
-  qt(0.975,(length(x)-1))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)
+  qt(0.975,(length(x)))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)
 }
 
 
@@ -172,7 +172,7 @@ barres.plot<-function(variable,Facteur,lettres=c(""),ecart="sem",ylim="NP",...)
   }
   IC<-function(x)
   {
-    qt(0.975,(length(x)-1))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)
+    qt(0.975,(length(x)))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)
   }
   ecartdon<-tapply(variable,Facteur,ecart)
   ybar<-as.vector(meandon)
@@ -873,7 +873,7 @@ Head2head.plot<-function(TABL,FACTEUR,col1=2,col2=3,cex_noms=1,erreur="sem",adj_
   ## Calcul des erreurs standards
   #fonction pour calcul erreur standard et ou intervalle de confiance
   sem<-function(x)  {sqrt(var(x,na.rm=T))/sqrt(length(x))}
-  IC<-function(x)  {qt(0.975,(length(x)-1))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)}
+  IC<-function(x)  {qt(0.975,(length(x)))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)}
   #Calcul de l'erreur
   ecart<-as.data.frame(t(apply(TABL,2,function(x) tapply(x,FACTEUR,erreur))))
 
@@ -1025,7 +1025,7 @@ structure.plotV2<-function(INDICE, FACTOR, MULTI=T, MTITLE="", ABMAX=5, col1="gr
   ## Calculation of errors
   #fonction pour calcul erreur standard et ou intervalle de confiance
   sem<-function(x)  {sqrt(var(x,na.rm=T))/sqrt(length(x))} #--V2
-  IC<-function(x)  {qt(0.975,(length(x)-1))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)}#--V2
+  IC<-function(x)  {qt(0.975,(length(x)))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)}#--V2
 
   #Calcul des erreurs en fonction des modalit?s
   Errors<-if(MULTI==T) as.data.frame(t(apply(TabCombinASSESS,2,function(x) tapply(x,FACTOR1,erreur)))) else as.data.frame(apply(TabCombinASSESS,2,function(x) tapply(x,FACTOR1,erreur)))#--V2
@@ -1206,7 +1206,7 @@ barres.plot.beside<-function(VARI,FAC1,FAC2,lettres=c(""),
   }
   IC<-function(x)
   {
-    qt(0.975,(length(x)-1))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)
+    qt(0.975,(length(x)))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)
   }
   MEAN<-ERRORS<-data.frame(matrix(NA,ncol=length(levels(FAC1)),nrow=length(levels(FAC2))))
   colnames(MEAN)<-colnames(ERRORS)<-as.character(levels(FAC1))
@@ -2010,7 +2010,7 @@ point.plot<-function(variable,Facteur,lettres=c(""),type="p",ecart="sem",ylim="N
   }
   IC<-function(x)
   {
-    qt(0.975,(length(x)-1))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)
+    qt(0.975,(length(x)))*sqrt(var(x,na.rm=T))/sqrt(length(x)-1)
   }
   ecartdon<-tapply(variable,Facteur,ecart)
   ybar<-as.vector(meandon)
