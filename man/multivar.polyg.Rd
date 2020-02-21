@@ -13,6 +13,7 @@ multivar.polyg(
   col_text = 1,
   col_bord = 1,
   cex_lab = 1,
+  font_lab = 1,
   dot = "yes",
   lab = "yes",
   new = "yes",
@@ -36,6 +37,8 @@ multivar.polyg(
 \item{col_bord}{couleur des lignes du polygone (noir par defaut)}
 
 \item{cex_lab}{taille des noms de modalites (si lab="yes")}
+
+\item{font_lab}{police des étiquettes}
 
 \item{dot}{si dot="yes", trace les points de chaque individu, "yes" par defaut}
 
