@@ -1358,6 +1358,7 @@ anovLetters<-function(VAR,FAC,ALPHA=0.05)
 #' @param col_text couleur des lignes du texte (noir par defaut)
 #' @param col_bord couleur des lignes du polygone (noir par defaut)
 #' @param cex_lab taille des noms de modalites (si lab="yes")
+#' @param font_lab police des étiquettes
 #' @param dot si dot="yes", trace les points de chaque individu, "yes" par defaut
 #' @param lab si lab="yes", affiche le nom de la modalite au niveau du barycentre de ses points, "yes" par defaut
 #' @param new si new="yes", trace les polygones sur une nouvelle fenetre (defaut), sinon, sur le graphe existant
@@ -1374,30 +1375,43 @@ anovLetters<-function(VAR,FAC,ALPHA=0.05)
 #'                                   ifelse(varechem$Al<230,"Al230","Al++"))))
 #' ord <- metaMDS(varespec)
 #' multivar.polyg(ord$points,facteur_Alu)
-multivar.polyg<-function(ANAcoo,FAC,pch=1,col_dot=1,col_fill=NA,col_text=1,col_bord=1,
-                         cex_lab=1,dot="yes",lab="yes",new="yes",sep="no",...)
+multivar.polyg <-function (ANAcoo, FAC, pch = 1, col_dot = 1, col_fill = NA, col_text = 1, 
+                           col_bord = 1, cex_lab = 1, font_lab = 1, dot = "yes", lab = "yes", new = "yes", 
+                           sep = "no", ...) 
 {
-  if(sep=="yes") x11()
-  if(new=="yes") plot(ANAcoo[,1:2],type="n",...)
-  for (i in 1:length(levels(FAC)))
-  {
-    pch1<-ifelse(length(pch)==1,pch,pch[i])
-    col_dot1<-ifelse(length(col_dot)==1,col_dot,col_dot[i])
-    col_fill1<-ifelse(length(col_fill)==1,col_fill,col_fill[i])
-    col_bord1<-ifelse(length(col_bord)==1,col_bord,col_bord[i])
-    col_text1<-ifelse(length(col_text)==1,col_text,col_text[i])
-    if(dot=="yes") points(ANAcoo[FAC==levels(FAC)[i],1:2],pch=pch1,col=col_dot1)
-    Xcoo<-ANAcoo[FAC==levels(FAC)[i],1]
-    Ycoo<-ANAcoo[FAC==levels(FAC)[i],2]
+  if (sep == "yes") 
+    x11()
+  if (new == "yes") 
+    plot(ANAcoo[, 1:2], type = "n", ...)
+  for (i in 1:length(levels(FAC))) {
+    pch1 <- ifelse(length(pch) == 1, pch, pch[i])
+    col_dot1 <- ifelse(length(col_dot) == 1, col_dot, col_dot[i])
+    col_fill1 <- ifelse(length(col_fill) == 1, col_fill, 
+                        col_fill[i])
+    col_bord1 <- ifelse(length(col_bord) == 1, col_bord, 
+                        col_bord[i])
+    col_text1 <- ifelse(length(col_text) == 1, col_text, 
+                        col_text[i])
+    if (dot == "yes") 
+      points(ANAcoo[FAC == levels(FAC)[i], 1:2], pch = pch1, 
+             col = col_dot1)
+    Xcoo <- ANAcoo[FAC == levels(FAC)[i], 1]
+    Ycoo <- ANAcoo[FAC == levels(FAC)[i], 2]
     hpts <- chull(x = Xcoo, y = Ycoo)
-    bnd=cbind(Xcoo[hpts], Ycoo[hpts])
-    polygon(bnd,col=col_fill1,border=col_bord1)
-    text(mean(Xcoo,na.rm=T),mean(Ycoo,na.rm=T),
-         labels=ifelse(lab=="yes",levels(FAC)[i],c("")),cex=cex_lab,col=col_text1)
-    if(sep=="yes") x11()
-    if(sep=="yes") plot(ANAcoo[,1:2],type="n")
+    bnd = cbind(Xcoo[hpts], Ycoo[hpts])
+    polygon(bnd, col = col_fill1, border = col_bord1)
+    if (sep == "yes") 
+      x11()
+    if (sep == "yes") 
+      plot(ANAcoo[, 1:2], type = "n")
   }
+  for (i in 1:length(levels(FAC))) {
+    Xcoo <- ANAcoo[FAC == levels(FAC)[i], 1]
+    Ycoo <- ANAcoo[FAC == levels(FAC)[i], 2]
+    text(mean(Xcoo, na.rm = T), mean(Ycoo, na.rm = T), labels = ifelse(lab == 
+                                                                         "yes", levels(FAC)[i], c("")), cex = cex_lab, col = col_text1, font = font_lab)}
 }
+
 
 
 #--------------------------better_arrows---------------------------------------------

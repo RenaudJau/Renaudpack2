@@ -99,7 +99,7 @@ par(mfrow=c(1,1)) #Pour restaurer les param?tres graphiques
 
 ## Pour rajouter les lettres des post-hoc avec la fonction `anovLetters`
 
-Si vous ne voulez pas vous emb?ter ? calculer vous m?me les lettres des tests post-hoc, et si et uniquement si vous ?tes dans les conditions d'utilisation d'une ANOVA ? un facteur, alors on peut faire ?a :
+Si vous ne voulez pas vous embêter à calculer vous même les lettres des tests post-hoc, et si et uniquement si vous ?tes dans les conditions d'utilisation d'une ANOVA ? un facteur, alors on peut faire ?a :
 
 ```{r}
 anov<-aov(biomasse~traitement)
@@ -119,7 +119,7 @@ lettresPH
 barres.plot(biomasse,traitement,lettres = lettresPH)
 ```
 
-*Note : possibilit? de changer le seuil alpha en utilisant l'argument `ALPHA`.
+*Note : possibilité de changer le seuil alpha en utilisant l'argument `ALPHA`.
 
 \newpage
 
@@ -369,6 +369,53 @@ point.plot(biomasse/2,traitement2, add = TRUE)
 ## La fonction `multivar.polyg`
 
 La fonction `multivar.polyg` permet de regrouper des points dans une analyse en faisant un polygone autour. On prends 
+
+Il faut :
+
+* `ANAcoo` coordonnées des points d'une analyse multivariées (`__$points` pour une NMDS, `__$li` pour une AFC, etc.)
+* `FAC` facteur qui permettra de séparer les polygones
+
+```{r}
+multivar.polyg(ANAcoo = NMDS$points, FAC = dune.env$Use)
+```
+
+Avec d'autres arguments si besoin :
+
+```{r}
+multivar.polyg(ANAcoo = NMDS$points, FAC = dune.env$Use,
+               pch = 16, # forme des points des sites
+               col_dot = c("darkolivegreen","cadetblue","firebrick")
+               #couleur des points des sites
+               )
+```
+```{r}
+multivar.polyg(ANAcoo = NMDS$points, FAC = dune.env$Use, 
+               col_fill = c("darkolivegreen","cadetblue","firebrick")
+               #couleur des polygones
+               )
+```
+
+Mieux vaux utiliser la fonction `modif_coul` pour ajouter de la transparence :
+
+```{r}
+multivar.polyg(ANAcoo = NMDS$points, FAC = dune.env$Use, 
+               col_fill = modif_coul(c("darkolivegreen","cadetblue","firebrick"),alpha = 0.5))
+```
+
+Et encore :
+
+```{r}
+multivar.polyg(ANAcoo = NMDS$points, FAC = dune.env$Use, 
+               col_bord =  c("darkolivegreen","cadetblue","firebrick"),
+               #couleur des bordures des polygones
+               col_text = c("darkolivegreen","cadetblue","firebrick"), 
+               #couleur du texte
+               cex_lab = 1.5, # taille des étiquettes
+               dot = "no" # présence ou non des points des sites
+               )
+```
+
+Possibilité aussi avec les arguments `lab` de ne pas afficher les étiquettes des modalités, `new` de ne pas faire ça sur un nouveau graphe mais sur un graphe existant, et `sep` de faire une nouvelle fenêtre pour chaque modalité du facteur.
 
 
 \newpage
