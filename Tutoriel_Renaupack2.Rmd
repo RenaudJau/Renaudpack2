@@ -73,7 +73,7 @@ barres.plot(biomasse,traitement)
 
 Il y a plusieurs choses que l'on peut modifier pour personaliser son graphique :
 
-* changer le type d'erreur repr?sent?e
+* changer le type d'erreur représentée
 
 * ajouter des lettres d'un test post-hoc
 
