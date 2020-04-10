@@ -214,7 +214,10 @@ barres.plot<-function(variable,Facteur,lettres=c(""),ecart="sem",ylim="NP",...)
 #'
 #' @export
 #'
-ComStructIndices<-function(REF, ASSESS, rar=1){
+ComStructIndices <- function(REF,
+                             ASSESS,
+                             rar=1)
+{
   ##------Combination of the two tables function-----------------------#
   combin.tab<-function(table1,table2)
   {
@@ -233,7 +236,7 @@ ComStructIndices<-function(REF, ASSESS, rar=1){
       comb.wt.db<-sort.comb[code==1]
     }
     #------------------------------------------------------#
-
+    
     ## Table creation
     liste<-doubl.rm(names(table1),names(table2))
     tabcomb<-data.frame(matrix(0,ncol=length(liste),nrow=nrow(table1)+nrow(table2)))
@@ -255,10 +258,10 @@ ComStructIndices<-function(REF, ASSESS, rar=1){
     return(tabcomb)
   }
   #----------------------------------------------------------------#
-
+  
   ## Combine REF and ASSESS tables
   Comb1<-combin.tab(REF,ASSESS)
-
+  
   ##------Removing rare species function------------#
   rar.rm<-function(table.AD,n)
   {
@@ -267,7 +270,7 @@ ComStructIndices<-function(REF, ASSESS, rar=1){
     table.AD.wr<-table.AD[,occur>=n]
   }
   #------------------------------------------------------#
-
+  
   Comb<-rar.rm(Comb1,rar) ## Removing species which do not occur in the Comb table
   Nam_Tot<-names(Comb) ## List of all the species
   ## Removing of species which do not occur in the reference
@@ -276,12 +279,12 @@ ComStructIndices<-function(REF, ASSESS, rar=1){
   Nam_Tar<-names(REF1) ## List of target species
   REF_Tab<-Comb[1:nrow(REF),] ## Reference community table
   ASSESS_Tab<-Comb[(nrow(REF)+1):nrow(Comb),] ## Assessed community table
-
+  
   ## ------------------------------------------------------------------#
   AbMeanREF<-apply(REF_Tab,2,mean,na.rm=T) ## Mean abundances in the reference community
   SumMeanAbREF<-sum(AbMeanREF) ## Sum of mean abundances in the reference community
   SumAbASSESS<-apply(ASSESS_Tab,1,sum,na.rm=T) ## Sum of Abundances in the assessed community
-
+  
   ## Calculation of differences:
   Diff<-as.data.frame(t(apply(ASSESS_Tab,1,function(x) AbMeanREF-x)))
   rownames(Diff)<-paste("ASSESS_",1:nrow(ASSESS_Tab),sep="")
@@ -292,7 +295,7 @@ ComStructIndices<-function(REF, ASSESS, rar=1){
   ## Sum of positive abudances:
   DiffPos<-data.frame(apply(Diff,c(1,2),function(x) if(x>0) x else 0))
   SumPos<-apply(DiffPos,1,sum)
-
+  
   ## Calculation of differences for reference communities:
   DiffTar<-as.data.frame(t(apply(REF_Tab,1,function(x) AbMeanREF-x)))
   rownames(DiffTar)<-paste("REF_",1:nrow(REF_Tab),sep="")
@@ -303,21 +306,22 @@ ComStructIndices<-function(REF, ASSESS, rar=1){
   ## Sum of positive abudances:
   DiffPosTar<-data.frame(apply(DiffTar,c(1,2),function(x) if(x>0) x else 0))
   SumPosTar<-apply(DiffPosTar,1,sum)
-
+  
   ## -----------------------------------------------#
   ## Indices:
   CSII<-(SumMeanAbREF-SumPos)/SumMeanAbREF ## Community Structure Integrity Index
   Ind_PourcREF<-(SumMeanAbREF-SumPosTar)/SumMeanAbREF ## Percentage of Community Structure Integrity in the references
   CSIInorm<-CSII/mean(Ind_PourcREF) ## Normalized Community Structure Integrity Index
   HAI<-SumNeg/SumAbASSESS ## Higher Abundance Index
-
+  
   ## table with only target species in the references:
   AbMeanREFOnly<-AbMeanREF[names(REF_Tab) %in% Nam_Tar=="TRUE"]
   ## table with only target species in the assessed communities:
   ASSESSTarOnly_Tab<-ASSESS_Tab[,names(ASSESS_Tab) %in% Nam_Tar=="TRUE"]
   ## table with only non-target species:
-  HigherOnly_Tab<-ASSESS_Tab[,names(ASSESS_Tab) %in% Nam_Tar=="FALSE"]
-
+  HigherOnly_Tab<- data.frame(ASSESS_Tab[,names(ASSESS_Tab) %in% Nam_Tar=="FALSE"])
+  names(HigherOnly_Tab) <- names(ASSESS_Tab)[names(ASSESS_Tab) %in% Nam_Tar=="FALSE"]
+  
   ## Output variables:
   Output<-list(Comb,Nam_Tot,Nam_Tar,REF_Tab,ASSESS_Tab,SumMeanAbREF,SumAbASSESS,Diff,SumNeg,SumPos,
                CSII,HAI,CSIInorm,
@@ -340,7 +344,6 @@ ComStructIndices<-function(REF, ASSESS, rar=1){
   names(Output)[[16]]<-"HigherOnly_Tab"
   return(Output)
 }
-
 
 #--------------------------Fonction structure.plot--------------------------------------------
 
@@ -1157,6 +1160,9 @@ structure.plotV2<-function(INDICE, FACTOR, MULTI=T, MTITLE="", ABMAX=5, col1="gr
 #' @param ylim comme pour la fonction \code{\link{plot}}, permet de preciser les limites de l'axe des ordonnees
 #' @param cex.let facultatif, taille des lettres
 #' @param srt.let facultatif, angle des lettres
+#' @param las.x facultatif, orientation des labels de l'axe x (2 = vertical)
+#' @param cex.x facultatif, taille des labels de l'axe x
+#' @param labels.x facultatif, noms des labels de l'axe x
 #' @param ... possibilite de rajouter des arguments comme \code{col},\code{main},\code{ylab},etc. associees a \code{\link{barplot}}
 #'
 #' @export
@@ -1196,9 +1202,13 @@ structure.plotV2<-function(INDICE, FACTOR, MULTI=T, MTITLE="", ABMAX=5, col1="gr
 #'                    etoiles=c("*","***"),col=coul2,ylab="Taille (cm)")
 #' legend("topleft",paste(rep(levels(Sexe),each=length(levels(Age))),
 #'                        rep(levels(Age),2),sep=" "),fill=coul2,bty="n")
-#'
-barres.plot.beside<-function(VARI,FAC1,FAC2,lettres=c(""),
-                             etoiles=c(""),ecart="sem",POSI="none",ylim="NP",cex.let=1,srt.let=0,...)
+#' # Nouveauté, possibilité de changer orientation, taille et titre des labels de x
+#' barres.plot.beside(Taille,Sexe,Age,las.x = 2)
+#' barres.plot.beside(Taille,Sexe,Age,cex.x = 0.5)
+#' barres.plot.beside(Taille,Sexe,Age,labels.x = c("Féminin","Masculin"))
+barres.plot.beside <- function(VARI,FAC1,FAC2,lettres=c(""),
+                               etoiles=c(""),ecart="sem",POSI="none",ylim="NP",cex.let=1,srt.let=0,
+                               las.x = 1,cex.x = 1,labels.x = 1,...)
 {
   sem<-function(x)
   {
@@ -1219,14 +1229,14 @@ barres.plot.beside<-function(VARI,FAC1,FAC2,lettres=c(""),
   YL=if(length(ylim)==1) c(0,(1.25*max(MEAN,na.rm=T)+max(ERRORS,na.rm=T))) else ylim
   xv<-barplot(as.matrix(MEAN),
               ylim=YL,
-              names=as.character(levels(FAC1)),beside=T,...)
+              names=as.character(levels(FAC1)),beside=T,xaxt="n",...)
   g<-(max(xv,na.rm=T)-min(xv,na.rm=T))/100
   a=0
   for(j in 1:dim(xv)[2])
   {
     for(i in 1:dim(xv)[1])
     {
-
+      
       lines(c(xv[i,j],xv[i,j]),c(MEAN[i,j]+ERRORS[i,j],MEAN[i,j]-ERRORS[i,j]))
       lines(c(xv[i,j]-g,xv[i,j]+g),c(MEAN[i,j]+ERRORS[i,j],MEAN[i,j]+ERRORS[i,j]))
       lines(c(xv[i,j]-g,xv[i,j]+g),c(MEAN[i,j]-ERRORS[i,j],MEAN[i,j]-ERRORS[i,j]))
@@ -1239,6 +1249,29 @@ barres.plot.beside<-function(VARI,FAC1,FAC2,lettres=c(""),
     text(mean(xv[,j]),
          (max(MEAN[,j]+ERRORS[,j])+0.15*max(MEAN,na.rm=T)),etoiles[j])
   }
+  
+  posi_F12_n <- 1.5
+  posi_F12 <- NULL
+  a<-0
+  for (j in 1:length(levels(FAC1)))
+  {
+    for (i in 1:length(levels(FAC2)))
+    {
+      posi_F12[i+a] <- posi_F12_n
+      posi_F12_n <- posi_F12_n+1
+    }
+    posi_F12_n <- posi_F12_n+1
+    a <- j*length(levels(FAC2))
+  }
+  posi_x <- NULL
+  LL <- length(levels(FAC2))
+  for(i in 1:(length(posi_F12)/LL))
+  {
+    posi_x[i] <- mean(posi_F12[(i*LL-(LL-1)):(i*LL)])
+  }
+  if(length(labels.x)==1){labels.x <- levels(FAC1)}else{labels.x <- labels.x}
+  axis(side = 1, at=posi_x, labels = labels.x, las=las.x, cex.axis=cex.x, tick = FALSE)
+  
 }
 
 # #-------------------------- Exemples d'utilisation ------------------------------------ --

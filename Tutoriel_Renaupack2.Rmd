@@ -167,6 +167,23 @@ lettres=c("a","b","c","c","a","b","c","c"),
 
 \newpage
 
+On peut aussi modifier l'axe des abscisses :
+
+* l'orientation avec `las.x` et la taille avec `cex.x` :
+
+```{r out.height="25%",fig.height=3.2,fig.width=5}
+barres.plot.beside(Taille,Age,Sexe,las.x = 2, cex.x = 0.6)
+```
+
+* les étiquettes avec `labels.x` : 
+
+```{r out.height="25%",fig.height=3.2,fig.width=5}
+barres.plot.beside(Taille,Age,Sexe,labels.x = c("2 ans","10 ans","20 ans","30 ans"))
+```
+*Attention, changer les noms ne veut pas dire qu'on change l'ordre des facteurs.. ne pas écrire n'importe quoi..*
+
+\newpage
+
 * avec des couleurs choisies avec la fonction `colorRampPalette` et une l?gende
 ```{r out.height="20%",fig.height=3,fig.width=10}
 par(mfrow=c(1,2))
@@ -374,6 +391,14 @@ Il faut :
 
 * `ANAcoo` coordonnées des points d'une analyse multivariées (`__$points` pour une NMDS, `__$li` pour une AFC, etc.)
 * `FAC` facteur qui permettra de séparer les polygones
+
+```{r}
+library(vegan)
+data("dune")
+data("dune.env")
+NMDS <- metaMDS(dune)
+```
+
 
 ```{r}
 multivar.polyg(ANAcoo = NMDS$points, FAC = dune.env$Use)

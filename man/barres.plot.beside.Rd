@@ -15,6 +15,9 @@ barres.plot.beside(
   ylim = "NP",
   cex.let = 1,
   srt.let = 0,
+  las.x = 1,
+  cex.x = 1,
+  labels.x = 1,
   ...
 )
 }
@@ -38,6 +41,12 @@ barres.plot.beside(
 \item{cex.let}{facultatif, taille des lettres}
 
 \item{srt.let}{facultatif, angle des lettres}
+
+\item{las.x}{facultatif, orientation des labels de l'axe x (2 = vertical)}
+
+\item{cex.x}{facultatif, taille des labels de l'axe x}
+
+\item{labels.x}{facultatif, noms des labels de l'axe x}
 
 \item{...}{possibilite de rajouter des arguments comme \code{col},\code{main},\code{ylab},etc. associees a \code{\link{barplot}}}
 }
@@ -80,5 +89,8 @@ barres.plot.beside(Taille,Sexe,Age,POSI="bottom",
                    etoiles=c("*","***"),col=coul2,ylab="Taille (cm)")
 legend("topleft",paste(rep(levels(Sexe),each=length(levels(Age))),
                        rep(levels(Age),2),sep=" "),fill=coul2,bty="n")
-
+# NouveautÃ©, possibilitÃ© de changer orientation, taille et titre des labels de x
+barres.plot.beside(Taille,Sexe,Age,las.x = 2)
+barres.plot.beside(Taille,Sexe,Age,cex.x = 0.5)
+barres.plot.beside(Taille,Sexe,Age,labels.x = c("FÃ©minin","Masculin"))
 }
