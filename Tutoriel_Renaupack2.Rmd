@@ -81,6 +81,8 @@ Il y a plusieurs choses que l'on peut modifier pour personaliser son graphique :
 
 * changer l'ordre des modalit?s (?a ?a n'est pas sp?cifique ? la fonction `barres.plot`)
 
+* on peut aussi modifier l'axe des abscisses (cf les arguments `las.x`, `cex.x` et `labels.x` de la fonction `barres.plot.beside` expliquée plus tard.
+
 ```{r fig.height=10, fig.width=14}
 par(mfrow=c(2,2)) #pour avoir 4 graphiques sur une m?me fen?tre
 barres.plot(biomasse,traitement,ecart=sd)
@@ -92,7 +94,6 @@ xlab="Traitements herbicides",ylab="Biomasse",font.lab=3,
 main="Efficacite des traitement")
 traitement2<-factor(traitement,levels=c("T3","T1","T2"))
 barres.plot(biomasse,traitement2)
-par(mfrow=c(1,1)) #Pour restaurer les param?tres graphiques
 ```
 
 \newpage

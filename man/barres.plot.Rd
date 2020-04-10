@@ -10,6 +10,9 @@ barres.plot(
   lettres = c(""),
   ecart = "sem",
   ylim = "NP",
+  las.x = 1,
+  cex.x = 1,
+  labels.x = 1,
   ...
 )
 }
@@ -23,6 +26,12 @@ barres.plot(
 \item{ecart}{(facultatif) type de calcul de la barre d'erreur (sem, IC, sd, var, etc.)}
 
 \item{ylim}{comme pour la fonction plot(), permet de preciser les limites de l'axe des ordonnees}
+
+\item{las.x}{facultatif, orientation des labels de l'axe x (2 = vertical)}
+
+\item{cex.x}{facultatif, taille des labels de l'axe x}
+
+\item{labels.x}{facultatif, taille des labels de l'axe x}
 
 \item{...}{possibilite de rajouter des arguments comme col,main,ylab,etc. associees a barplot}
 }
@@ -47,7 +56,13 @@ main="Efficacite des traitement")
 #Pour Julie.., si on veut changer l'ordre des traitements, il faut reprendre la fonction factor()
 traitement<-factor(traitement,levels=c("T3","T1","T2"))
 barres.plot(biomasse,traitement)
-
+#NouveautÃ© : possibilitÃ© de changer orientation, taille et titre des labels de x
+barres.plot(biomasse,traitement,las.x = 2)
+barres.plot(biomasse,traitement,cex.x = 0.8)
+barres.plot(biomasse,traitement,labels.x = c("Traitement 1","Traitement 2","Traitement
+                                             super
+                                             hyper bien
+                                             3"), las.x = 2, cex.x = 0.8)
 }
 \seealso{
 \code{\link{barplot}} pour tout les arguments dans \code{...}

@@ -125,6 +125,9 @@ rar.rm <- function (tableau.AD, n = 1, ABUN = 0.000001)
 #' @param lettres (facultatif) liste de type c("text","text") qui figurera au dessus des barres
 #' @param ecart (facultatif) type de calcul de la barre d'erreur (sem, IC, sd, var, etc.)
 #' @param ylim comme pour la fonction plot(), permet de preciser les limites de l'axe des ordonnees
+#' @param las.x facultatif, orientation des labels de l'axe x (2 = vertical)
+#' @param cex.x facultatif, taille des labels de l'axe x
+#' @param labels.x facultatif, taille des labels de l'axe x
 #' @param ... possibilite de rajouter des arguments comme col,main,ylab,etc. associees a barplot
 #' @seealso \code{\link{barplot}} pour tout les arguments dans \code{...}
 #'
@@ -147,15 +150,22 @@ rar.rm <- function (tableau.AD, n = 1, ABUN = 0.000001)
 #' #Pour Julie.., si on veut changer l'ordre des traitements, il faut reprendre la fonction factor()
 #' traitement<-factor(traitement,levels=c("T3","T1","T2"))
 #' barres.plot(biomasse,traitement)
-#'
-barres.plot<-function(variable,Facteur,lettres=c(""),ecart="sem",ylim="NP",...)
+#' #Nouveauté : possibilité de changer orientation, taille et titre des labels de x
+#' barres.plot(biomasse,traitement,las.x = 2)
+#' barres.plot(biomasse,traitement,cex.x = 0.8)
+#' barres.plot(biomasse,traitement,labels.x = c("Traitement 1","Traitement 2","Traitement
+#'                                              super
+#'                                              hyper bien
+#'                                              3"), las.x = 2, cex.x = 0.8)
+barres.plot<-function(variable,Facteur,lettres=c(""),ecart="sem",ylim="NP",
+                      las.x = 1,cex.x = 1,labels.x = 1,...)
 {
   errors.bars<-function(yv,z,nn,lettres,YL)
   {
     xv<-
       barplot(yv,
               ylim=YL,
-              names=nn,...)
+              names=nn,xaxt="n",...)
     g<-(max(xv,na.rm=T)-min(xv,na.rm=T))/50
     for(i in 1:length(xv))
     {
@@ -164,6 +174,8 @@ barres.plot<-function(variable,Facteur,lettres=c(""),ecart="sem",ylim="NP",...)
       lines(c(xv[i]-g,xv[i]+g),c(yv[i]-z[i],yv[i]-z[i]))
       text(xv[i],(yv[i]+z[i]+0.07*max(yv,na.rm=T)),lettres[i])
     }
+    return(xv)
+    
   }
   meandon<-tapply(variable,Facteur,mean,na.rm=T)
   sem<-function(x)
@@ -179,7 +191,11 @@ barres.plot<-function(variable,Facteur,lettres=c(""),ecart="sem",ylim="NP",...)
   se<-as.vector(ecartdon)
   labels<-as.character(levels(Facteur))
   YL=if(length(ylim)==1) c(0,(1.25*max(ybar,na.rm=T)+max(se,na.rm=T))) else ylim
-  errors.bars(ybar,se,labels,lettres,YL=YL)
+  xcoo <- errors.bars(ybar,se,labels,lettres,YL=YL)
+  
+  if(length(labels.x)==1){labels.x <- levels(Facteur)}else{labels.x <- labels.x}
+  axis(side = 1, at=xcoo, labels = labels.x, las=las.x, cex.axis=cex.x, tick = FALSE)
+  
 }
 
 
