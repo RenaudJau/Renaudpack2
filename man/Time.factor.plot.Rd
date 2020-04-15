@@ -10,12 +10,12 @@ Time.factor.plot(
   variable,
   xlab = "TIME",
   ylab = "variable",
-  pch = c(0),
-  couleur = c(0),
-  lty = c(0),
-  lwd = c(0),
-  xlim = "NP",
-  ylim = "NP",
+  pch = NULL,
+  couleur = NULL,
+  lty = NULL,
+  lwd = NULL,
+  xlim = NULL,
+  ylim = NULL,
   Posit_leg = "topleft",
   linktyp = "b",
   etoiles = c(""),
@@ -55,12 +55,6 @@ Time.factor.plot(
 }
 \description{
 Trace une courbe par modalite d'un facteur d'une variable en fonction du temps (moyenne + barres d'erreurs)
-}
-\details{
-Ne pas faire attention aux messages d'erreur du type suivant, je n'ai pas encore reussi a les retirer...
-Messages d'avis :
-"1: In if (couleur == c(0)) rep(1, length(levels(factor(FACTOR)))) else couleur :
-   la condition a une longueur > 1 et seul le premier element est utilise"
 }
 \examples{
 # Exemple d'application :

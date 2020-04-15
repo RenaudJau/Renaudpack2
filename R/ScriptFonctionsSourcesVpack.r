@@ -734,11 +734,6 @@ BBtransf<-function(comtab,plus=0.1){
 #' @param etoiles permet de mettre du texte (ou des etoiles) au dessus de chacune des "TIME"
 #' @param ... autres arguments associes a la fonction \code{\link{plot}}
 #'
-#' @details Ne pas faire attention aux messages d'erreur du type suivant, je n'ai pas encore reussi a les retirer...
-#' Messages d'avis :
-#' "1: In if (couleur == c(0)) rep(1, length(levels(factor(FACTOR)))) else couleur :
-#'    la condition a une longueur > 1 et seul le premier element est utilise"
-#'
 #' @export
 #'
 #' @examples # Exemple d'application :
@@ -752,15 +747,14 @@ BBtransf<-function(comtab,plus=0.1){
 #' Time.factor.plot(tim,fac,vari,etoiles=c("*","***","","***"))
 #'
 Time.factor.plot<-function(TIME,FACTOR,variable,xlab="TIME",ylab="variable"
-                           ,pch=c(0),couleur=c(0),lty=c(0),lwd=c(0),xlim="NP",ylim="NP",
+                           ,pch=NULL,couleur=NULL,lty=NULL,lwd=NULL,xlim=NULL,ylim=NULL,
                            Posit_leg="topleft",linktyp="b",etoiles=c(""),...)
 {
   #Regler les couleurs et symboles et lignes... :
-  couleur=if(couleur==c(0)) rep(1,length(levels(factor(FACTOR)))) else couleur
-  pch=if(pch==c(0)) rep(1,length(levels(factor(FACTOR)))) else pch
-  linktyp=linktyp
-  lty=if(lty==c(0)) rep(1,length(levels(factor(FACTOR)))) else lty
-  lwd=if(lwd==c(0)) rep(1,length(levels(factor(FACTOR)))) else lwd
+  couleur=if(is.null(couleur)==TRUE) rep(1,length(levels(factor(FACTOR)))) else couleur
+  pch=if(is.null(pch)==TRUE) rep(1,length(levels(factor(FACTOR)))) else pch
+  lty=if(is.null(lty)==TRUE) rep(1,length(levels(factor(FACTOR)))) else lty
+  lwd=if(is.null(lwd)==TRUE) rep(1,length(levels(factor(FACTOR)))) else lwd
   #La fonction point.barres
   point.barres=function(moyenne,abscisse,erreur,couleur,pch,lty,lwd)
   {
@@ -776,20 +770,20 @@ Time.factor.plot<-function(TIME,FACTOR,variable,xlab="TIME",ylab="variable"
             c(moyenne[i]-erreur[i],moyenne[i]-erreur[i]),col=couleur)
     }
   }
-
+  
   #D?finition des limites
-  XL=if(xlim=="NP") c(0,max(as.numeric(levels(factor(TIME))),na.rm=T)) else xlim
-  YL=if(ylim=="NP") c(0,1.1*max(variable,na.rm=T)) else ylim
-
+  XL=if(is.null(xlim)==TRUE) c(min(as.numeric(levels(factor(TIME))),na.rm=T),max(as.numeric(levels(factor(TIME))),na.rm=T)) else xlim
+  YL=if(is.null(ylim)==TRUE) c(0,1.1*max(variable,na.rm=T)) else ylim
+  
   #Fen?tre graphique
   plot(c(1,1),xlim=XL,
        ylim=YL,
        xlab=xlab,
        ylab=ylab,type="n",...)
-
+  
   #Definition du facteur
   FACTOR=factor(FACTOR)
-
+  
   #Tracer pour chaque modalit? du facteur, l'?volution en fonction du temps
   for(a in 1:length(levels(factor(FACTOR))))
   {
@@ -815,7 +809,7 @@ Time.factor.plot<-function(TIME,FACTOR,variable,xlab="TIME",ylab="variable"
     point.barres(BB$meandon,BB$absc,BB$semdon,couleur=couleur[a],
                  pch=pch[a],lty=lty[a],lwd=lwd[a])
   }
-
+  
   #Placement ?toiles
   #calcul valeurs max :
   max_moy=NULL
@@ -832,12 +826,11 @@ Time.factor.plot<-function(TIME,FACTOR,variable,xlab="TIME",ylab="variable"
   }
   max_tim<-0.05*max(variable,na.rm=T)+max_moy+sem_max
   text(x=unique(TIME),y=max_tim,labels=etoiles)
-
+  
   #Ajout de la l?gende
   Posit_leg=Posit_leg
-  legend(Posit_leg,as.character(levels(factor(FACTOR))),pch=pch,col=couleur)
+  legend(Posit_leg,as.character(levels(factor(FACTOR))),pch=pch,col=couleur, bty = "n")
 }
-
 #--------------------------Head2head.plot  -------------------------------
 #Fonction pour graphes en tetes a tetes :
 

@@ -559,7 +559,7 @@ label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
 
 
 
-# Pour de la manipulation de donn?es
+# Pour de la manipulation de données
 
 ## La fonction `BBtransf`
 
