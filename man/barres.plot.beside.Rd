@@ -19,7 +19,7 @@ barres.plot.beside(
   cex.x = 1,
   labels.x = 1,
   font.x = 1,
-  col.x = 1,
+  cl.x = 1,
   below.x = 0,
   ...
 )
@@ -50,6 +50,12 @@ barres.plot.beside(
 \item{cex.x}{facultatif, taille des labels de l'axe x}
 
 \item{labels.x}{facultatif, noms des labels de l'axe x}
+
+\item{font.x}{facultatif, police des labels de l'axe x}
+
+\item{cl.x}{facultatif, couleur des labels de l'axe x}
+
+\item{below.x}{facultatif, décalage vers le bas des labels de l'axe x (1,2,3)}
 
 \item{...}{possibilite de rajouter des arguments comme \code{col},\code{main},\code{ylab},etc. associees a \code{\link{barplot}}}
 }
@@ -97,5 +103,5 @@ barres.plot.beside(Taille,Sexe,Age,las.x = 2)
 barres.plot.beside(Taille,Sexe,Age,cex.x = 0.5)
 barres.plot.beside(Taille,Sexe,Age,labels.x = c("FÃ©minin","Masculin"))
 barres.plot.beside(Taille,Sexe,Age,labels.x = c("FÃ©minin","Masculin"), 
-font.x = 3, col.x = 2, below.x = 2)
+font.x = 3, cl.x = 2, below.x = 2)
 }
