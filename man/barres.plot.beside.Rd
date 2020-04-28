@@ -18,6 +18,9 @@ barres.plot.beside(
   las.x = 1,
   cex.x = 1,
   labels.x = 1,
+  font.x = 1,
+  col.x = 1,
+  below.x = 0,
   ...
 )
 }
@@ -93,4 +96,6 @@ legend("topleft",paste(rep(levels(Sexe),each=length(levels(Age))),
 barres.plot.beside(Taille,Sexe,Age,las.x = 2)
 barres.plot.beside(Taille,Sexe,Age,cex.x = 0.5)
 barres.plot.beside(Taille,Sexe,Age,labels.x = c("FÃ©minin","Masculin"))
+barres.plot.beside(Taille,Sexe,Age,labels.x = c("FÃ©minin","Masculin"), 
+font.x = 3, col.x = 2, below.x = 2)
 }

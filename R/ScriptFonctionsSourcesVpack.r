@@ -128,6 +128,9 @@ rar.rm <- function (tableau.AD, n = 1, ABUN = 0.000001)
 #' @param las.x facultatif, orientation des labels de l'axe x (2 = vertical)
 #' @param cex.x facultatif, taille des labels de l'axe x
 #' @param labels.x facultatif, taille des labels de l'axe x
+#' @param font.x facultatif, police des labels de l'axe x
+#' @param col.x facultatif, couleur des labels de l'axe x
+#' @param below.x facultatif, décalage vers le bas des labels de l'axe x (1,2,3)
 #' @param ... possibilite de rajouter des arguments comme col,main,ylab,etc. associees a barplot
 #' @seealso \code{\link{barplot}} pour tout les arguments dans \code{...}
 #'
@@ -157,8 +160,14 @@ rar.rm <- function (tableau.AD, n = 1, ABUN = 0.000001)
 #'                                              super
 #'                                              hyper bien
 #'                                              3"), las.x = 2, cex.x = 0.8)
+#' barres.plot(biomasse,traitement,labels.x = c("Traitement 1","Traitement 2","Traitement
+#'                                              super
+#'                                              hyper bien
+#'                                              3"), las.x = 2, cex.x = 0.8,
+#'                                              font.x = 3, col.x = "cadetblue", below.x = 2)
 barres.plot<-function(variable,Facteur,lettres=c(""),ecart="sem",ylim="NP",
-                      las.x = 1,cex.x = 1,labels.x = 1,...)
+                      las.x = 1,cex.x = 1,labels.x = 1, 
+                      font.x = 1, col.x = 1, below.x = 0,...)
 {
   errors.bars<-function(yv,z,nn,lettres,YL)
   {
@@ -194,7 +203,8 @@ barres.plot<-function(variable,Facteur,lettres=c(""),ecart="sem",ylim="NP",
   xcoo <- errors.bars(ybar,se,labels,lettres,YL=YL)
   
   if(length(labels.x)==1){labels.x <- levels(Facteur)}else{labels.x <- labels.x}
-  axis(side = 1, at=xcoo, labels = labels.x, las=las.x, cex.axis=cex.x, tick = FALSE)
+  axis(side = 1, at=xcoo, labels = labels.x, las=las.x, cex.axis=cex.x, 
+       font = font.x, col.axis = col.x, line = below.x, tick = FALSE)
   
 }
 
@@ -1215,9 +1225,12 @@ structure.plotV2<-function(INDICE, FACTOR, MULTI=T, MTITLE="", ABMAX=5, col1="gr
 #' barres.plot.beside(Taille,Sexe,Age,las.x = 2)
 #' barres.plot.beside(Taille,Sexe,Age,cex.x = 0.5)
 #' barres.plot.beside(Taille,Sexe,Age,labels.x = c("Féminin","Masculin"))
+#' barres.plot.beside(Taille,Sexe,Age,labels.x = c("Féminin","Masculin"), 
+#' font.x = 3, col.x = 2, below.x = 2)
 barres.plot.beside <- function(VARI,FAC1,FAC2,lettres=c(""),
                                etoiles=c(""),ecart="sem",POSI="none",ylim="NP",cex.let=1,srt.let=0,
-                               las.x = 1,cex.x = 1,labels.x = 1,...)
+                               las.x = 1,cex.x = 1,labels.x = 1, 
+                               font.x = 1, col.x = 1, below.x = 0,...)
 {
   sem<-function(x)
   {
@@ -1279,7 +1292,8 @@ barres.plot.beside <- function(VARI,FAC1,FAC2,lettres=c(""),
     posi_x[i] <- mean(posi_F12[(i*LL-(LL-1)):(i*LL)])
   }
   if(length(labels.x)==1){labels.x <- levels(FAC1)}else{labels.x <- labels.x}
-  axis(side = 1, at=posi_x, labels = labels.x, las=las.x, cex.axis=cex.x, tick = FALSE)
+  axis(side = 1, at=posi_x, labels = labels.x, las=las.x, cex.axis=cex.x, 
+       font = font.x, col.axis = col.x, line = below.x, tick = FALSE)
   
 }
 

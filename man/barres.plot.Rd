@@ -13,6 +13,9 @@ barres.plot(
   las.x = 1,
   cex.x = 1,
   labels.x = 1,
+  font.x = 1,
+  col.x = 1,
+  below.x = 0,
   ...
 )
 }
@@ -32,6 +35,12 @@ barres.plot(
 \item{cex.x}{facultatif, taille des labels de l'axe x}
 
 \item{labels.x}{facultatif, taille des labels de l'axe x}
+
+\item{font.x}{facultatif, police des labels de l'axe x}
+
+\item{col.x}{facultatif, couleur des labels de l'axe x}
+
+\item{below.x}{facultatif, décalage vers le bas des labels de l'axe x (1,2,3)}
 
 \item{...}{possibilite de rajouter des arguments comme col,main,ylab,etc. associees a barplot}
 }
@@ -63,6 +72,11 @@ barres.plot(biomasse,traitement,labels.x = c("Traitement 1","Traitement 2","Trai
                                              super
                                              hyper bien
                                              3"), las.x = 2, cex.x = 0.8)
+barres.plot(biomasse,traitement,labels.x = c("Traitement 1","Traitement 2","Traitement
+                                             super
+                                             hyper bien
+                                             3"), las.x = 2, cex.x = 0.8,
+                                             font.x = 3, col.x = "cadetblue", below.x = 2)
 }
 \seealso{
 \code{\link{barplot}} pour tout les arguments dans \code{...}
