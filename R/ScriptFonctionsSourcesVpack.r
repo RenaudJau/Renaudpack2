@@ -2477,3 +2477,54 @@ label.corV2 <- function(COO_ESP, COO_REL, RELEVES, METHOD = "defaut", P= "defaut
   }
 }
 
+
+#' Ecart à un témoin par site
+#' 
+#' @description calcule l'écart à un témoin par site pour une variable ou un groupe de variable
+#'
+#' @param VARIABLE vecteur ou data.frame, doit être numérique
+#' @param FACTEUR facteur dont une des modalité est le témoin
+#' @param CAT_COMP identifiant du témoin
+#' @param SITE facteur donnant les identifiants du site
+#'
+#' @return un objet de la même forme que VARIABLE
+#' @export
+#'
+#' @examples var1 <- c(4,2,5,8,1,2,5,5)
+#' var2 <- c(5,1,2,6,7,2,1,3)
+#' resattendu1 <-c(0,-2,1,4,0,1,4,4)
+#' resattendu2 <-c(0,-4,-3,1,0,-5,-6,-4)
+#' facteur <- factor(rep(c("TEM","TRAI1","TRAI2","TRAI3"),2))
+#' site <- factor(rep(c("site1","site2"),each=4))
+#' tab <- data.frame(var1, var2, facteur, site)
+#' ecart.ctrl(VARIABLE = tab$var1, FACTEUR = tab$facteur, CAT_COMP = "TEM", SITE = tab$site)
+#' ecart.ctrl(VARIABLE = tab[,1:2], FACTEUR = tab$facteur, CAT_COMP = "TEM", SITE = tab$site)
+ecart.ctrl <- function(VARIABLE,FACTEUR,CAT_COMP,SITE)
+{
+  if(is.data.frame(VARIABLE)==FALSE){
+    ecart_var <- NULL
+    for(i in 1:length(VARIABLE))
+    {
+      comp_val <- mean(VARIABLE[SITE==SITE[i] & FACTEUR==CAT_COMP],na.rm=T)
+      ecart_var[i] <- VARIABLE[i] - comp_val
+    }
+    
+    output <- ecart_var
+  }else{
+    tab_ecart_var <- data.frame(matrix(data = 0,nrow = nrow(VARIABLE),ncol = ncol(VARIABLE)))
+    names(tab_ecart_var) <- names(VARIABLE)
+    for(j in 1:ncol(VARIABLE))
+    {
+      ecart_var <- NULL
+      for(i in 1:nrow(VARIABLE))
+      {
+        comp_val <- mean(VARIABLE[SITE==SITE[i] & FACTEUR==CAT_COMP,j],na.rm=T)
+        ecart_var[i] <- VARIABLE[i,j] - comp_val
+      }
+      tab_ecart_var[,j] <- ecart_var
+    }
+    output <- tab_ecart_var
+  }
+  return(output)
+}
+
