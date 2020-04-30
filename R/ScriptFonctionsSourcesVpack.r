@@ -2486,6 +2486,8 @@ label.corV2 <- function(COO_ESP, COO_REL, RELEVES, METHOD = "defaut", P= "defaut
 #' @param FACTEUR facteur dont une des modalité est le témoin
 #' @param CAT_COMP identifiant du témoin
 #' @param SITE facteur donnant les identifiants du site
+#' 
+#' @details fonction spécifique dans le cadre du stage de Léo.. mais on sait jamais si ça peut servir à d'autres..
 #'
 #' @return un objet de la même forme que VARIABLE
 #' @export

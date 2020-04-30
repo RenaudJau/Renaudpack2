@@ -21,6 +21,9 @@ un objet de la même forme que VARIABLE
 \description{
 calcule l'écart à un témoin par site pour une variable ou un groupe de variable
 }
+\details{
+fonction spécifique dans le cadre du stage de Léo.. mais on sait jamais si ça peut servir à d'autres..
+}
 \examples{
 var1 <- c(4,2,5,8,1,2,5,5)
 var2 <- c(5,1,2,6,7,2,1,3)
