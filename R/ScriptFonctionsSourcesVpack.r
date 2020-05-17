@@ -742,6 +742,7 @@ BBtransf<-function(comtab,plus=0.1){
 #' @param Posit_leg permet de preciser la position de la legende, soit c(x,y), soit "topleft", "bottomright", etc.
 #' @param linktyp permet de pr?ciser quel type de lien entre les points... : \code{"p"} for points,\code{"l"} for lines, \code{"o"} for overplotted points and lines, \code{"b"}, \code{"c"})
 #' @param etoiles permet de mettre du texte (ou des etoiles) au dessus de chacune des "TIME"
+#' @param new si FALSE, trace le graphique sur une fenêtre existant
 #' @param ... autres arguments associes a la fonction \code{\link{plot}}
 #'
 #' @export
@@ -758,13 +759,16 @@ BBtransf<-function(comtab,plus=0.1){
 #'
 Time.factor.plot<-function(TIME,FACTOR,variable,xlab="TIME",ylab="variable"
                            ,pch=NULL,couleur=NULL,lty=NULL,lwd=NULL,xlim=NULL,ylim=NULL,
-                           Posit_leg="topleft",linktyp="b",etoiles=c(""),...)
+                           Posit_leg="topleft",linktyp="b",etoiles=c(""),new=TRUE,...)
 {
   #Regler les couleurs et symboles et lignes... :
   couleur=if(is.null(couleur)==TRUE) rep(1,length(levels(factor(FACTOR)))) else couleur
-  pch=if(is.null(pch)==TRUE) rep(1,length(levels(factor(FACTOR)))) else pch
-  lty=if(is.null(lty)==TRUE) rep(1,length(levels(factor(FACTOR)))) else lty
-  lwd=if(is.null(lwd)==TRUE) rep(1,length(levels(factor(FACTOR)))) else lwd
+  pch=if(is.null(pch)==TRUE) rep(1,length(levels(factor(FACTOR)))) else {
+    if(length(pch)!=length(levels(FACTOR))) rep(pch,length(levels(FACTOR))) else pch}
+  lty=if(is.null(lty)==TRUE) rep(1,length(levels(factor(FACTOR)))) else {
+    if(length(lty)!=length(levels(FACTOR))) rep(lty,length(levels(FACTOR))) else lty}
+  lwd=if(is.null(lwd)==TRUE) rep(1,length(levels(factor(FACTOR)))) else {
+    if(length(lwd)!=length(levels(FACTOR))) rep(lwd,length(levels(FACTOR))) else lwd}
   #La fonction point.barres
   point.barres=function(moyenne,abscisse,erreur,couleur,pch,lty,lwd)
   {
@@ -785,15 +789,18 @@ Time.factor.plot<-function(TIME,FACTOR,variable,xlab="TIME",ylab="variable"
   XL=if(is.null(xlim)==TRUE) c(min(as.numeric(levels(factor(TIME))),na.rm=T),max(as.numeric(levels(factor(TIME))),na.rm=T)) else xlim
   YL=if(is.null(ylim)==TRUE) c(0,1.1*max(variable,na.rm=T)) else ylim
   
-  #Fen?tre graphique
-  plot(c(1,1),xlim=XL,
-       ylim=YL,
-       xlab=xlab,
-       ylab=ylab,type="n",...)
+  if(new==TRUE){
+    #Fen?tre graphique
+    plot(c(1,1),xlim=XL,
+         ylim=YL,
+         xlab=xlab,
+         ylab=ylab,type="n",...)
+  }
+
   
   #Definition du facteur
   FACTOR=factor(FACTOR)
-  
+
   #Tracer pour chaque modalit? du facteur, l'?volution en fonction du temps
   for(a in 1:length(levels(factor(FACTOR))))
   {
@@ -838,8 +845,10 @@ Time.factor.plot<-function(TIME,FACTOR,variable,xlab="TIME",ylab="variable"
   text(x=unique(TIME),y=max_tim,labels=etoiles)
   
   #Ajout de la l?gende
-  Posit_leg=Posit_leg
-  legend(Posit_leg,as.character(levels(factor(FACTOR))),pch=pch,col=couleur, bty = "n")
+  if(Posit_leg%in%c("bottomright","bottom","bottomleft","left","topleft","top","topright","right","center")){
+    legend(Posit_leg,as.character(levels(factor(FACTOR))),pch=pch,col=couleur, bty = "n")
+  }
+  
 }
 #--------------------------Head2head.plot  -------------------------------
 #Fonction pour graphes en tetes a tetes :

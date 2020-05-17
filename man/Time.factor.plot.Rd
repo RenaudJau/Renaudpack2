@@ -19,6 +19,7 @@ Time.factor.plot(
   Posit_leg = "topleft",
   linktyp = "b",
   etoiles = c(""),
+  new = TRUE,
   ...
 )
 }
@@ -50,6 +51,8 @@ Time.factor.plot(
 \item{linktyp}{permet de pr?ciser quel type de lien entre les points... : \code{"p"} for points,\code{"l"} for lines, \code{"o"} for overplotted points and lines, \code{"b"}, \code{"c"})}
 
 \item{etoiles}{permet de mettre du texte (ou des etoiles) au dessus de chacune des "TIME"}
+
+\item{new}{si FALSE, trace le graphique sur une fenêtre existant}
 
 \item{...}{autres arguments associes a la fonction \code{\link{plot}}}
 }
