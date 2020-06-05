@@ -7,7 +7,7 @@
 modif_coul(COULEUR, mods = 0.5, modv = 0.5, modh = 0.5, alpha = 1)
 }
 \arguments{
-\item{COULEUR}{une couleur, soit en nom de couleur R ("cadetblue"), soit en code hexadécimal}
+\item{COULEUR}{une couleur ou liste de couleur, soit en nom de couleur R ("cadetblue"), soit en code hexadécimal}
 
 \item{mods}{coefficient modérateur de la saturation, sous 0.5 ça désature, au dessus, ça sature}
 

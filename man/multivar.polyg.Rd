@@ -32,7 +32,7 @@ multivar.polyg(
 
 \item{col_fill}{couleur du remplissage des polygone (transparent par defaut)}
 
-\item{col_text}{couleur des lignes du texte (noir par defaut)}
+\item{col_text}{couleur du texte (noir par defaut)}
 
 \item{col_bord}{couleur des lignes du polygone (noir par defaut)}
 
