@@ -1093,13 +1093,17 @@ structure.plotV2<-function(INDICE, FACTOR, MULTI=T, MTITLE="", ABMAX=5, col1="gr
     yv<-ifelse(yv==0,NA,yv) #--V2
     xv<-barplot(yv,xlim=XLIM,col=col1,horiz=T,main=MAIN,...)#--V2
     g<-(max(xv,na.rm=T)-min(xv,na.rm=T))/20*w_err#--V2
-    for(i in 1:length(xv))#--V2
-    {
-      if(z[i]!=0) lines(c(yv[i]+z[i],yv[i]-z[i]),c(xv[i],xv[i]))#--V2
-      if(z[i]!=0) lines(c(yv[i]+z[i],yv[i]+z[i]),c(xv[i]+g,xv[i]-g))#--V2
-      if(z[i]!=0) lines(c(yv[i]-z[i],yv[i]-z[i]),c(xv[i]+g,xv[i]-g))#--V2
-      text((yv[i]+z[i]+0.2*sp_star*max(yv,na.rm=T)),xv[i],etoiles[i])#--V2
+    if(is.na(z[i])==FALSE){
+      for(i in 1:length(xv))#--V2
+      {
+        
+        if(z[i]!=0) lines(c(yv[i]+z[i],yv[i]-z[i]),c(xv[i],xv[i]))#--V2
+        if(z[i]!=0) lines(c(yv[i]+z[i],yv[i]+z[i]),c(xv[i]+g,xv[i]-g))#--V2
+        if(z[i]!=0) lines(c(yv[i]-z[i],yv[i]-z[i]),c(xv[i]+g,xv[i]-g))#--V2
+        text((yv[i]+z[i]+0.2*sp_star*max(yv,na.rm=T)),xv[i],etoiles[i])#--V2
+      }
     }
+    
   }
 
   species.names<-if(noms=="T") sort_Abundance$INDICE.Nam_Tot else "" ## names definition
@@ -1158,13 +1162,16 @@ structure.plotV2<-function(INDICE, FACTOR, MULTI=T, MTITLE="", ABMAX=5, col1="gr
     {
       yv<-ifelse(yv==0,NA,yv) #--V2
       g<-(max(xv,na.rm=T)-min(xv,na.rm=T))/20*w_err#--V2
-      for(i in 1:length(xv))#--V2
-      {
-        if(z[i]!=0) lines(c(yv[i]+z[i],yv[i]-z[i]),c(xv[i],xv[i]))#--V2
-        if(z[i]!=0) lines(c(yv[i]+z[i],yv[i]+z[i]),c(xv[i]+g,xv[i]-g))#--V2
-        if(z[i]!=0) lines(c(yv[i]-z[i],yv[i]-z[i]),c(xv[i]+g,xv[i]-g))#--V2
-        text((max(c(etoiles_pos[i],yv[i]+z[i]),na.rm=T)+0.1*sp_star*max(c(yv,etoiles_pos),na.rm=T)),xv[i],etoiles[i])#--V2
+      if(is.na(z[i])==FALSE){
+        for(i in 1:length(xv))#--V2
+        {
+          if(z[i]!=0) lines(c(yv[i]+z[i],yv[i]-z[i]),c(xv[i],xv[i]))#--V2
+          if(z[i]!=0) lines(c(yv[i]+z[i],yv[i]+z[i]),c(xv[i]+g,xv[i]-g))#--V2
+          if(z[i]!=0) lines(c(yv[i]-z[i],yv[i]-z[i]),c(xv[i]+g,xv[i]-g))#--V2
+          text((max(c(etoiles_pos[i],yv[i]+z[i]),na.rm=T)+0.1*sp_star*max(c(yv,etoiles_pos),na.rm=T)),xv[i],etoiles[i])#--V2
+        }
       }
+
     }
     etoiles=if(stars!="T") c("") else sign2
     errors.bars.only(sort_Abundance[,3+i],sort_Error[,4+i],xv=XV,#--V2
