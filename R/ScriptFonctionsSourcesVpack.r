@@ -8,30 +8,6 @@
 #
 # Renaud.
 
-#-----------------------Misesajour:
-#M?J 31-10-2013 : Time.factor.plot() ajout d'un argument linktyp
-#M?J 31-10-2013 : ajout de la fonction Head2head.plot
-#M?J 15-04-2014 : ajout de la fonction barres.plot.beside
-#M?J 15-05-2014 : ajout de l'argument ylim dans barres.plot et barres.plot.beside
-#M?J 20-05-2014 : ajout de la sous-fonction label.corDCA
-#M?J 20-05-2014 : ajout des fonctions anovLetters() et lmeLetters()
-#M?J 22-05-2014 : ajout argument srt.let et cex.let dans barres.plot.beside
-#M?J 22-05-2014 : modif --Letters pour retourner des "" si non significatif...
-#M?J 22-01-2015 : ajout de la fonction multivar.polyg()
-#M?J 15-06-2015 : ajout argument ?toilesaTime.factor.plot()
-#M?J 16-06-2015 : ajout fonction better_arrows()
-#M?J 16-06-2015 : ajout de l'argument "new"ala fonction multivar.polyg()
-#M?J 23-06-2015 : ajout de la fonction Remplacer()
-#M?J 27-08-2015 : ajout de la fonction radarchart2() (en cours)
-#M?J 04-08-2015 : ajout de la fonction Classes_def
-#M?J 10-01-2016 : ajout de la fonction occ
-#M?J 20-04-2016 : ajout de la fonction Tableau_recap
-#M?J 20-04-2016 : ajout de la fonction Couleur_continue
-#M?J 22-04-2016 : ajout de la fonction Fonction_hist_double
-#M?J 23-05-2016 : correction bug sous titre dans Fonction_hist_double
-#MaJ 25-10-2016 : ajout de la fonctionSim_Clust_Ordre
-#MaJ 02-03-2018 : ajout de la fonction modif_coul
-#MaJ 06-03-2018 : ajout de la fonction point.plot
 
 #--------------------------sem  ---------------------------------------------
 
@@ -2570,4 +2546,272 @@ ecart.ctrl <- function(VARIABLE,FACTEUR,CAT_COMP,SITE)
 }
 
 #-------------------------- ecart.ctrl ---------------------------------------------
+
+#-------------------------- multivar.domi ---------------------------------------------
+
+#' multivar.domi
+#'
+#' @param COO_REL Coordonnées des espèces suites à une ordination, pour les deux premiers axes, après dudi.pca et dudi.coa c'est ANALYSE$co[,1:2], après decorana c'est ANALYSE$cproj[,1:2], après metaMDS c'est ANALYSE$species[,1:2], etc.
+#' @param RELEVES les relevés ayant servi à faire l'analyse multivariée
+#' @param ESP l'espèce à afficher
+#' @param COL_NULL couleur des points des relevés sans l'espèce
+#' @param COL_LOW couleur pour les abondances faibles
+#' @param COL_HIGH couleur pour les abondances fortes
+#' @param cex taille des points de l'espèce
+#' @param ADD par defaut, créer un graphe seul, si add=T, les noms d'especes sont ajouté au graphe déjà existant
+#' @param ... les autres arguments de la fonction plot (ne s'applique pas aux points de l'espèces, affichés par la fonction points..)
+#'
+#' @return
+#' @export
+#' 
+#' @import vegan
+#'
+#' @examples data("dune")
+#' ANALYSE_NMDS <- metaMDS(dune, trace = FALSE)
+#' multivar.domi(COO_REL = ANALYSE_NMDS$points, RELEVES = dune, ESP = "Achimill")
+multivar.domi <- function(COO_REL, RELEVES, ESP, COL_NULL = "gray", 
+                          COL_LOW = "blue", COL_HIGH = "red", cex = 1, 
+                          ADD = FALSE, ...)
+{
+  if(ADD==FALSE){
+    plot(COO_REL, col = COL_NULL, main = ESP, ...)
+    # plot(COO_REL, col = COL_NULL, main = ESP)
+  }
+  ab_esp <- RELEVES[,which(names(RELEVES)==ESP)]
+  coul <- Couleur_continue(VAR = ab_esp, COLORS = c(COL_LOW, COL_HIGH))
+  points(COO_REL, pch = 16, 
+         cex = cex*ifelse(ab_esp==0,0.01,1),
+         col = coul)
+}
+#-------------------------- Especes_Typiques ---------------------------------------------
+
+#' Especes_Typiques
+#'
+#' @param RELEVES le tableau de relevés
+#' @param FAC vecteur du facteur donnant les catégories
+#' @param MOD modalité du facteur FAC à afficher, si rien n'est mentionné, réalisé pour chaque modalité
+#' @param NOMBRE nombre d'espèces les plus abondantes à afficher (possibilité d'avoir plus d'espèces affichées si ex aequo sauf si NOMBRESTRICT = TRUE)
+#' @param NOMBRESTRICT affichage ou non des ex aequo
+#' @param METRIQUE métrique utilisée pour le classement. Par défaut c'est la fréquence, i.e. le % de relevé dans laquelle l'espèce est présente. Sinon c'est l'abondance moyenne à l'échelle de l'ensemble des relevés de la modalité (pas uniquement ceux où l'espèce est présente). 
+#'
+#' @return
+#' @export
+#'
+#' @examples data("dune")
+#' Especes_Typiques(RELEVES = dune, FAC = dune.env$Use, NOMBRE = 5)
+#' Hay <- Especes_Typiques(RELEVES = dune, FAC = dune.env$Use, NOMBRE = 3,
+#'                  MOD = "Hayfield", NOMBRESTRICT = TRUE)
+#' Hay
+Especes_Typiques <- function(RELEVES, FAC, MOD = "All", NOMBRE, 
+                             NOMBRESTRICT = FALSE, METRIQUE = "Frequence"){
+  
+  Especes_Typiques_base <- function(RELEVES, FAC, MOD, NOMBRE, 
+                                    NOMBRESTRICT, METRIQUE){
+    
+    releves_sel <- RELEVES[FAC==MOD,]
+    
+    #Fréquence :
+    PA <- function(x) {if (x > 0) 1 else 0}
+    tab_PA <- data.frame(apply(releves_sel, c(1, 2), PA))
+    Freq <- round(apply(tab_PA,2,sum)/nrow(tab_PA),2)
+    Freq <- Freq[order(Freq,decreasing = TRUE)]
+    Freq_sel <- if(Freq[NOMBRE]!=Freq[NOMBRE+1]) {
+      Freq[1:(NOMBRE)]} else {
+        Freq[Freq>=Freq[NOMBRE]]}
+    Freq_sel <- if(NOMBRESTRICT==TRUE) Freq_sel[1:NOMBRE] else Freq_sel
+    
+    #Moyenne :
+    Ab_moy <- round(apply(releves_sel,2,mean),2)
+    Ab_moy <- Ab_moy[order(Ab_moy,decreasing = TRUE)]
+    Ab_moy_sel <- if(Ab_moy[NOMBRE]!=Ab_moy[NOMBRE+1]) {
+      Ab_moy[1:(NOMBRE)]} else {
+        Ab_moy[Ab_moy>=Ab_moy[NOMBRE]]}
+    Ab_moy_sel <- if(NOMBRESTRICT==TRUE) Ab_moy_sel[1:NOMBRE] else Ab_moy_sel
+    
+    Output <- if(METRIQUE == "Frequence") {
+      data.frame(Fréquence = Freq_sel)} else {
+        data.frame(Moyenne = Ab_moy_sel)}
+    
+  }
+  if(MOD == "All") {
+    for(i in 1:length(levels(FAC)))
+    {
+      print("-------------------------")
+      print(levels(FAC)[i])
+      print("")
+      print(Especes_Typiques_base(RELEVES=RELEVES, FAC=FAC, MOD=levels(FAC)[i],
+                                  NOMBRE=NOMBRE, NOMBRESTRICT=NOMBRESTRICT, 
+                                  METRIQUE=METRIQUE))
+      print("-------------------------")
+    }
+  }else{return(Especes_Typiques_base(RELEVES=RELEVES, FAC=FAC, MOD=MOD,
+                                     NOMBRE=NOMBRE, NOMBRESTRICT=NOMBRESTRICT, 
+                                     METRIQUE=METRIQUE))}
+  
+}
+
+#-------------------------- Especes_dominantes ---------------------------------------------
+
+#' Affichage espèces dominantes
+#'
+#' @param RELEVES le tableau de relevés
+#' @param SEL_RELEVES les relevés selectionnés
+#' @param NOMS_RELEVES le nom des relevés
+#' @param N le nombre d'espèces dominantes à conserver
+#'
+#' @return
+#' @export
+#'
+#' @examples data("dune")
+#' TabSpDominantes <- Especes_dominantes(RELEVES = dune, SEL_RELEVES = c(4,7,8),
+#'                                       NOMS_RELEVES = c(1:ncol(dune)), N = 10)
+Especes_dominantes <- function(RELEVES,SEL_RELEVES,NOMS_RELEVES,N)
+{
+  Especes <- names(RELEVES)[rank(-RELEVES[NOMS_RELEVES==SEL_RELEVES[1],]) <= N]
+  if(length(NOMS_RELEVES)>1) {
+    for(i in 1:length(SEL_RELEVES))
+    {
+      Especes <- names(RELEVES)[rank(-RELEVES[NOMS_RELEVES==SEL_RELEVES[i],]) <= N]
+    }
+  }
+  data.frame(Relevé = SEL_RELEVES, RELEVES[NOMS_RELEVES%in%SEL_RELEVES,names(RELEVES)%in%Especes])
+}
+
+#-------------------------- wheelscores ---------------------------------------------
+
+#' Score wheel
+#'
+#' @description Draw a score wheel inspired from the recovery wheel of SER Standards (McDonald et al., 2016)
+#'
+#' @param lowercat A vector of scores labels
+#' @param supercat A vector of categories labels
+#' @param scores A numeric vector of scores (between 0 and 5)
+#' @param col.score The color of achieved scores
+#' @param col.null The color of unachieved scores
+#' @param col.lines The color of lines and circles
+#' @param col.border The color of the border containing categories labels
+#' @param cex.sup An expansion factor for categories labels
+#' @param col.super A vector of colors for each categories
+#' @param cex.low An expansion factor for scores labels
+#' @param circles (default = TRUE) if FALSE, doesn't draw intermediate circles
+#' 
+#' @details uses function from plotrix package Lemon, J. (2006) Plotrix: a package in the red light district of R. R-News, 6(4): 8-12.
+#' 
+#' @export
+#' @import plotrix
+#' 
+#' @example # data to draw the same scores as in McDonald et al., 2016
+#' sousTcat<-c("Spatial mosaic","All trophic levels","All strata present",
+#' "No undesirable species","Desirable animals","Desirable plants",
+#' "Water chemo-physical","Substrate chemical","Substrate physical",
+#' "Contamination","Invasive species","Over-utilization",
+#' "Habitat links","Gene flows","Landscape flows",
+#' "Resilience/recruitment","Habitat & interactions","Productivity/cycling")
+#' superTcat<-c(rep(c("STRUCTURAL DIVERSITY","SPECIES COMPOSITION", "PHYSICAL CONDITIONS", 
+#' "ABSENCE OF THREATS", "EXTERNAL EXCHANGES", "ECOSYSTEM FUNCTION"),each=3))
+#' scoTres<-c(2,2,3,4,2,4,4,4,4,5,3,5,3,2,2,0,2,2)
+#' 
+#' wheelscores(sousTcat,superTcat,scoTres,col.lines = "cadetblue4",col.score = "darkolivegreen2",
+#' col.border = "gray97",cex.sup = 1.2,cex.low = 0.6)
+#' #data to draw the same scores as in McDonald et al., 2016
+#' sousTcat<-c("Spatial mosaic","All trophic levels","All strata present",
+#' "No undesirable species","Desirable animals","Desirable plants",
+#'             "Water chemo-physical","Substrate chemical","Substrate physical",
+#'             "Contamination","Invasive species","Over-utilization",
+#' "Habitat links","Gene flows","Landscape flows",
+#'             "Resilience/recruitment","Habitat & interactions","Productivity/cycling")
+#' superTcat<-c(rep("STRUCTURAL DIVERSITY",2),rep("SPECIES COMPOSITION",4),
+#' rep(c("PHYSICAL CONDITIONS", "ABSENCE OF THREATS", "EXTERNAL EXCHANGES", "ECOSYSTEM FUNCTION"),each=3))
+#' scoTres<-c(2.2,2,3,4,2,4,4,4.8,4,5,3,5,3,2,2,0,2,2)
+#' data.frame(sousTcat,superTcat,scoTres)
+#' 
+#' #the plot
+#' wheelscores(sousTcat,superTcat,scoTres)
+#' #with customisation
+#' wheelscores(sousTcat,superTcat,scoTres,col.lines = "cadetblue4",
+#' col.score = "darkolivegreen2",col.border = "gray97",
+#' cex.sup = 1.2,cex.low = 0.6,circles = FALSE)
+#' #with colors by categories
+#' wheelscores(sousTcat,superTcat,scoTres,col.lines = "cadetblue4",
+#' col.super = c("#c0392b","#76448a","#2e86c1",
+#' "#27ae60","#f4d03f","#edbb99"),
+#' col.border = "gray97",cex.sup = 1.2,cex.low = 0.6,
+#' circles = FALSE)
+#' #if there is a mistake in the number of colors
+#' wheelscores(sousTcat,superTcat,scoTres,col.lines = "cadetblue4",
+#' col.super = c("#c0392b","#2e86c1",
+#' "#27ae60","#f4d03f","#edbb99"),
+#' col.border = "gray97",cex.sup = 1.2,cex.low = 0.6,
+#' circles = FALSE)
+wheelscores <- function(lowercat,supercat,scores,col.score='#a1d99b',col.null='white',
+                        col.lines="black",col.border='grey',cex.sup=1,
+                        col.super = NULL, cex.low=0.7, circles = TRUE,...)
+{
+  pie(1, radius=1, init.angle=90, col=col.border, border = NA, labels='',...)
+  # pie(1, radius=1, init.angle=90, col=col.border, border = NA, labels='')
+  
+  if(is.null(col.super)==FALSE & length(col.super)!=length(unique(supercat))){
+    print("Warning: Color and supercategories numbers differ!")
+  }
+  
+  if(is.null(col.super) | length(col.super)!=length(unique(supercat))){
+    col.super <- rep(col.score,length(unique(supercat)))
+  }
+  
+  col_super_long <- Remplacer(LISTE = supercat, VALEURS = unique(supercat), VALEURS_NEW = col.super)
+  tab_scores <- data.frame(col_super_long,scores)
+  
+  so_tab_scores <- tab_scores[order(-tab_scores$scores),]
+  
+  for(i in 1:length(so_tab_scores$scores))
+  {
+    col_cir<-ifelse(scores>=so_tab_scores$scores[i],col_super_long,col.null)
+    floating.pie(0,0,rep(c(1),length(so_tab_scores$scores)),
+                 radius=so_tab_scores$scores[i]/6, startpos=0, 
+                 col=col_cir,border=NA)
+  }
+  
+  if(circles==TRUE){
+    for(i in 1:6)
+    {
+      lwdcir<-ifelse(i>=5, 2, 1)
+      draw.circle(0,0,i/6,border = col.lines, lwd = lwdcir)
+    }
+  }else{  
+    for(i in 1:2)
+    {
+      lwdcir<-1
+      draw.circle(0,0,(i+4)/6,border = col.lines, lwd = lwdcir)
+    }
+  }
+  
+  nb_cat<-length(lowercat)
+  for(i in 1:nb_cat){
+    segments(x0 = 0,y0=0,x1 = 5/6*cos(i*pi/(nb_cat/2)), y1 = 5/6*sin(i*pi/(nb_cat/2)),col=col.lines)
+    rot<-ifelse(i>=(nb_cat/4) & i<3*(nb_cat/4), 180, 0)
+    text(x= 0.5*cos((i-0.5)*pi/(nb_cat/2)), y= 0.5*sin((i-0.5)*pi/(nb_cat/2)),
+         labels = lowercat[i], srt=rot+180/pi*(i-0.5)*pi/(nb_cat/2),cex = cex.low)
+  }
+  
+  largsupercat<-as.vector(tapply(supercat,factor(supercat,levels=unique(supercat)),length))
+  angline<-0
+  for(i in 1:length(largsupercat)){
+    angline<-angline+largsupercat[i]
+    segments(x0 = 0,y0=0,x1 = cos(angline*pi/(nb_cat/2)), y1 = sin(angline*pi/(nb_cat/2)),
+             lwd = 2,col=col.lines)
+    angtext<-angline-(largsupercat[i]/2)
+    arctext(x = unique(supercat)[i], center = c(0, 0), radius = 5.5/6, 
+            middle = angtext*pi/(nb_cat/2),cex=cex.sup,clockwise = ifelse(angtext>(nb_cat/2),FALSE,TRUE))
+  }
+  
+}
+
+#--------------------------  ---------------------------------------------
+#--------------------------  ---------------------------------------------
+#--------------------------  ---------------------------------------------
+#--------------------------  ---------------------------------------------
+#--------------------------  ---------------------------------------------
+#--------------------------  ---------------------------------------------
+#--------------------------  ---------------------------------------------
+
 
