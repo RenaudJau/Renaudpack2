@@ -42,7 +42,7 @@ label.corV2(
 Calcul les corrélations des espèces avec les axes puis n'affiche que les plus corrélées
 }
 \examples{
-# tÃ©lÃ©chargement des donnÃ©es de vegan
+# téléchargement des données de vegan
 data("dune")
 NMDS <- metaMDS(dune)
 label.corV2(COO_ESP = NMDS$species, COO_REL = NMDS$points, RELEVES = dune, METHOD = "RHO", RHO = 0.5)
@@ -53,13 +53,13 @@ RELEVES = dune, METHOD = "P", P = 0.05)
 plot(NMDS$points[,1:2])
 label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
             RELEVES = dune, METHOD = "RHO", RHO = 0.5, ADD = T)
-Sans graphe prÃ©cÃ©dent, par un nombre d'espÃ¨ces en fonction du p :
+Sans graphe précédent, par un nombre d'espèces en fonction du p :
 label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
             RELEVES = dune, METHOD = "N_base_P", N = 10)
-# Sans graphe prÃ©cÃ©dent, par un nombre d'espÃ¨ces en fonction du rho :
+# Sans graphe précédent, par un nombre d'espèces en fonction du rho :
 label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
 RELEVES = dune, METHOD = "N_base_RHO", N = 15)
-# Sans graphe prÃ©cÃ©dent, par un nombre d'espÃ¨ces en fonction du rho et en utilisant tout un tas d'autres arguments de la fonction `text`:
+# Sans graphe précédent, par un nombre d'espèces en fonction du rho et en utilisant tout un tas d'autres arguments de la fonction `text`:
 label.corV2(COO_ESP = NMDS$species[,1:2], COO_REL = NMDS$points[,1:2],
 RELEVES = dune, METHOD = "N_base_RHO", N = 15, 
 col="cadetblue", cex=1.5, font = 3)

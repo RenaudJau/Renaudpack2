@@ -56,7 +56,7 @@ point.plot(biomasse,traitement,lettres=c("a","ab","b"),
            col=c("cadetblue"),
            xlab="Traitements herbicides",ylab="Biomasse",font.lab=3,
            main="Efficacite des traitement",pch=16,type="b",lty=3,lwd=4,cex=3)
-#Si on veut ajouter Ã  un graphe existant..
+#Si on veut ajouter à un graphe existant..
 point.plot(biomasse/2,traitement,lettres=c("a","ab","b"),
            col=c("darkolivegreen"),pch=16,add="TRUE")
 

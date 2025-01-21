@@ -98,10 +98,10 @@ barres.plot.beside(Taille,Sexe,Age,POSI="bottom",
                    etoiles=c("*","***"),col=coul2,ylab="Taille (cm)")
 legend("topleft",paste(rep(levels(Sexe),each=length(levels(Age))),
                        rep(levels(Age),2),sep=" "),fill=coul2,bty="n")
-# NouveautÃ©, possibilitÃ© de changer orientation, taille et titre des labels de x
+# Nouveauté, possibilité de changer orientation, taille et titre des labels de x
 barres.plot.beside(Taille,Sexe,Age,las.x = 2)
 barres.plot.beside(Taille,Sexe,Age,cex.x = 0.5)
-barres.plot.beside(Taille,Sexe,Age,labels.x = c("FÃ©minin","Masculin"))
-barres.plot.beside(Taille,Sexe,Age,labels.x = c("FÃ©minin","Masculin"), 
+barres.plot.beside(Taille,Sexe,Age,labels.x = c("Féminin","Masculin"))
+barres.plot.beside(Taille,Sexe,Age,labels.x = c("Féminin","Masculin"), 
 font.x = 3, cl.x = 2, below.x = 2)
 }

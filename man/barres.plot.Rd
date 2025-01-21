@@ -65,7 +65,7 @@ main="Efficacite des traitement")
 #Pour Julie.., si on veut changer l'ordre des traitements, il faut reprendre la fonction factor()
 traitement<-factor(traitement,levels=c("T3","T1","T2"))
 barres.plot(biomasse,traitement)
-#NouveautÃ© : possibilitÃ© de changer orientation, taille et titre des labels de x
+#Nouveauté : possibilité de changer orientation, taille et titre des labels de x
 barres.plot(biomasse,traitement,las.x = 2)
 barres.plot(biomasse,traitement,cex.x = 0.8)
 barres.plot(biomasse,traitement,labels.x = c("Traitement 1","Traitement 2","Traitement

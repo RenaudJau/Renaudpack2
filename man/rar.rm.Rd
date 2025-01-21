@@ -23,25 +23,25 @@ Supprime les especes n'ayant pas un certain nombre d'occurences
 !Nouveautés! Nouvel argument ABUN qui permet de choisir non plus sur un nombre d'occurence mais sur une valeur d'abondance (fréquence, recouvrement, etc.) minimale dans tout le tableau, voir l'exemple pour plus de clarté.
 }
 \examples{
-#' # Exemple avec les donnÃ©es "dune" de vegan
+#' # Exemple avec les données "dune" de vegan
 library(vegan)
 data(dune)
 ncol(dune)
-# Il y a 30 espÃ¨ces..
-# Juste pour voir le nombre d'occurence des espÃ¨ces
+# Il y a 30 espèces..
+# Juste pour voir le nombre d'occurence des espèces
 PA <- data.frame(apply(dune, c(1, 2), function(x) if (x != 0) 1  else 0))
 apply(PA,2,sum)
-# Il y a 3 espÃ¨ces dans 1 seul relevÃ©s et 5 dans moins de 3 relevÃ©s
+# Il y a 3 espèces dans 1 seul relevés et 5 dans moins de 3 relevés
 dune_ocu2 <- rar.rm(tableau.AD = dune, n = 2)
-ncol(dune_ocu2) #3 espÃ¨ces on bien Ã©tÃ© retirÃ©es
+ncol(dune_ocu2) #3 espèces on bien été retirées
 dune_ocu3 <- rar.rm(tableau.AD = dune, n = 3)
-ncol(dune_ocu3) #5 espÃ¨ces on bien Ã©tÃ© retirÃ©es
-# Juste pour voir le nombre maximal d'abondance par espÃ¨ce :
+ncol(dune_ocu3) #5 espèces on bien été retirées
+# Juste pour voir le nombre maximal d'abondance par espèce :
 apply(dune,2,max)
-# On voit qu'il y a 5 espÃ¨ces qui ont des abondances max qui sont infÃ©rieures Ã  3
+# On voit qu'il y a 5 espèces qui ont des abondances max qui sont inférieures à 3
 dune_abun3 <- rar.rm(tableau.AD = dune,ABUN = 3)
-ncol(dune_abun3) # 5 espÃ¨ces ont bien Ã©tÃ© retirÃ©es
-# PossibilitÃ© de combiner les 2 :
+ncol(dune_abun3) # 5 espèces ont bien été retirées
+# Possibilité de combiner les 2 :
 dune_combi <- rar.rm(tableau.AD = dune, n = 2, ABUN = 3)
-ncol(dune_combi) #ici Ã§a veut dire qu'il y a seulement 20 espÃ¨ces qui ont au moins 2 relevÃ©s avec des abondances au moins Ã©gal Ã  3.
+ncol(dune_combi) #ici ça veut dire qu'il y a seulement 20 espèces qui ont au moins 2 relevés avec des abondances au moins égal à 3.
 }
