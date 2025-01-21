@@ -39,6 +39,7 @@ multivar.domi(
 multivar.domi
 }
 \examples{
+library(vegan)
 data("dune")
 ANALYSE_NMDS <- metaMDS(dune, trace = FALSE)
 multivar.domi(COO_REL = ANALYSE_NMDS$points, RELEVES = dune, ESP = "Achimill")

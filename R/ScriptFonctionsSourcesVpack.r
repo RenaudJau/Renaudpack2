@@ -2566,7 +2566,8 @@ ecart.ctrl <- function(VARIABLE,FACTEUR,CAT_COMP,SITE)
 #' 
 #' @import vegan
 #'
-#' @examples data("dune")
+#' @examples library(vegan)
+#' data("dune")
 #' ANALYSE_NMDS <- metaMDS(dune, trace = FALSE)
 #' multivar.domi(COO_REL = ANALYSE_NMDS$points, RELEVES = dune, ESP = "Achimill")
 multivar.domi <- function(COO_REL, RELEVES, ESP, COL_NULL = "gray", 
@@ -2592,12 +2593,13 @@ multivar.domi <- function(COO_REL, RELEVES, ESP, COL_NULL = "gray",
 #' @param MOD modalité du facteur FAC à afficher, si rien n'est mentionné, réalisé pour chaque modalité
 #' @param NOMBRE nombre d'espèces les plus abondantes à afficher (possibilité d'avoir plus d'espèces affichées si ex aequo sauf si NOMBRESTRICT = TRUE)
 #' @param NOMBRESTRICT affichage ou non des ex aequo
-#' @param METRIQUE métrique utilisée pour le classement. Par défaut c'est la fréquence, i.e. le % de relevé dans laquelle l'espèce est présente. Sinon c'est l'abondance moyenne à l'échelle de l'ensemble des relevés de la modalité (pas uniquement ceux où l'espèce est présente). 
+#' @param METRIQUE métrique utilisée pour le classement. Par défaut c'est la fréquence, i.e. le pourcentage de relevés dans laquelle l'espèce est présente. Sinon c'est l'abondance moyenne à l'échelle de l'ensemble des relevés de la modalité (pas uniquement ceux où l'espèce est présente). 
 #'
 #' @return
 #' @export
 #'
-#' @examples data("dune")
+#' @examples library(vegan)
+#' data("dune")
 #' Especes_Typiques(RELEVES = dune, FAC = dune.env$Use, NOMBRE = 5)
 #' Hay <- Especes_Typiques(RELEVES = dune, FAC = dune.env$Use, NOMBRE = 3,
 #'                  MOD = "Hayfield", NOMBRESTRICT = TRUE)
@@ -2662,7 +2664,8 @@ Especes_Typiques <- function(RELEVES, FAC, MOD = "All", NOMBRE,
 #' @return
 #' @export
 #'
-#' @examples data("dune")
+#' @examples library(vegan)
+#' data("dune")
 #' TabSpDominantes <- Especes_dominantes(RELEVES = dune, SEL_RELEVES = c(4,7,8),
 #'                                       NOMS_RELEVES = c(1:ncol(dune)), N = 10)
 Especes_dominantes <- function(RELEVES,SEL_RELEVES,NOMS_RELEVES,N)
@@ -2700,7 +2703,7 @@ Especes_dominantes <- function(RELEVES,SEL_RELEVES,NOMS_RELEVES,N)
 #' @export
 #' @import plotrix
 #' 
-#' @example # data to draw the same scores as in McDonald et al., 2016
+#' @examples # data to draw the same scores as in McDonald et al., 2016
 #' sousTcat<-c("Spatial mosaic","All trophic levels","All strata present",
 #' "No undesirable species","Desirable animals","Desirable plants",
 #' "Water chemo-physical","Substrate chemical","Substrate physical",

@@ -24,12 +24,13 @@ Especes_Typiques(
 
 \item{NOMBRESTRICT}{affichage ou non des ex aequo}
 
-\item{METRIQUE}{métrique utilisée pour le classement. Par défaut c'est la fréquence, i.e. le % de relevé dans laquelle l'espèce est présente. Sinon c'est l'abondance moyenne à l'échelle de l'ensemble des relevés de la modalité (pas uniquement ceux où l'espèce est présente).}
+\item{METRIQUE}{métrique utilisée pour le classement. Par défaut c'est la fréquence, i.e. le pourcentage de relevés dans laquelle l'espèce est présente. Sinon c'est l'abondance moyenne à l'échelle de l'ensemble des relevés de la modalité (pas uniquement ceux où l'espèce est présente).}
 }
 \description{
 Especes_Typiques
 }
 \examples{
+library(vegan)
 data("dune")
 Especes_Typiques(RELEVES = dune, FAC = dune.env$Use, NOMBRE = 5)
 Hay <- Especes_Typiques(RELEVES = dune, FAC = dune.env$Use, NOMBRE = 3,

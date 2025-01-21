@@ -19,6 +19,7 @@ Especes_dominantes(RELEVES, SEL_RELEVES, NOMS_RELEVES, N)
 Affichage espèces dominantes
 }
 \examples{
+library(vegan)
 data("dune")
 TabSpDominantes <- Especes_dominantes(RELEVES = dune, SEL_RELEVES = c(4,7,8),
                                       NOMS_RELEVES = c(1:ncol(dune)), N = 10)

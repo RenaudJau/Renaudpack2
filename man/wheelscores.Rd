@@ -48,3 +48,48 @@ Draw a score wheel inspired from the recovery wheel of SER Standards (McDonald e
 \details{
 uses function from plotrix package Lemon, J. (2006) Plotrix: a package in the red light district of R. R-News, 6(4): 8-12.
 }
+\examples{
+# data to draw the same scores as in McDonald et al., 2016
+sousTcat<-c("Spatial mosaic","All trophic levels","All strata present",
+"No undesirable species","Desirable animals","Desirable plants",
+"Water chemo-physical","Substrate chemical","Substrate physical",
+"Contamination","Invasive species","Over-utilization",
+"Habitat links","Gene flows","Landscape flows",
+"Resilience/recruitment","Habitat & interactions","Productivity/cycling")
+superTcat<-c(rep(c("STRUCTURAL DIVERSITY","SPECIES COMPOSITION", "PHYSICAL CONDITIONS", 
+"ABSENCE OF THREATS", "EXTERNAL EXCHANGES", "ECOSYSTEM FUNCTION"),each=3))
+scoTres<-c(2,2,3,4,2,4,4,4,4,5,3,5,3,2,2,0,2,2)
+
+wheelscores(sousTcat,superTcat,scoTres,col.lines = "cadetblue4",col.score = "darkolivegreen2",
+col.border = "gray97",cex.sup = 1.2,cex.low = 0.6)
+#data to draw the same scores as in McDonald et al., 2016
+sousTcat<-c("Spatial mosaic","All trophic levels","All strata present",
+"No undesirable species","Desirable animals","Desirable plants",
+            "Water chemo-physical","Substrate chemical","Substrate physical",
+            "Contamination","Invasive species","Over-utilization",
+"Habitat links","Gene flows","Landscape flows",
+            "Resilience/recruitment","Habitat & interactions","Productivity/cycling")
+superTcat<-c(rep("STRUCTURAL DIVERSITY",2),rep("SPECIES COMPOSITION",4),
+rep(c("PHYSICAL CONDITIONS", "ABSENCE OF THREATS", "EXTERNAL EXCHANGES", "ECOSYSTEM FUNCTION"),each=3))
+scoTres<-c(2.2,2,3,4,2,4,4,4.8,4,5,3,5,3,2,2,0,2,2)
+data.frame(sousTcat,superTcat,scoTres)
+
+#the plot
+wheelscores(sousTcat,superTcat,scoTres)
+#with customisation
+wheelscores(sousTcat,superTcat,scoTres,col.lines = "cadetblue4",
+col.score = "darkolivegreen2",col.border = "gray97",
+cex.sup = 1.2,cex.low = 0.6,circles = FALSE)
+#with colors by categories
+wheelscores(sousTcat,superTcat,scoTres,col.lines = "cadetblue4",
+col.super = c("#c0392b","#76448a","#2e86c1",
+"#27ae60","#f4d03f","#edbb99"),
+col.border = "gray97",cex.sup = 1.2,cex.low = 0.6,
+circles = FALSE)
+#if there is a mistake in the number of colors
+wheelscores(sousTcat,superTcat,scoTres,col.lines = "cadetblue4",
+col.super = c("#c0392b","#2e86c1",
+"#27ae60","#f4d03f","#edbb99"),
+col.border = "gray97",cex.sup = 1.2,cex.low = 0.6,
+circles = FALSE)
+}
