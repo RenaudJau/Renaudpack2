@@ -8,22 +8,25 @@ editor_options:
   chunk_output_type: console
 ---
 
-*Dernière mise à jour : 27-12-2019*
+*Dernière mise à jour : 25/02/2022*
 
 \newpage
 
 # Introduction
 
-Il s'agit d'un tuto pour mes fonctions perso, réunnies dans le package au doux sobriquet de `Renaudpack2`
+Il s'agit d'un tuto pour mes fonctions perso, réunnies dans le package au doux sobriquet de `Renaudpack2`. Pourquoi *Renaupack2* égoet pas un nom un peu moins égocentré ? Pour rappeller que c'est un package personnel, qui regroupe mes fonctions perso.. Alors oui, je le partage volontier, mais non, je ne veux pas que ça devienne un package classique du CRAN dont je devrais assurer la maintenance et le service après-vente...
 
-Depuis peu l'installation est possible via Github, c'est ultra simple en utilisant une fonction du package `devtools`, qu'il faut donc potentiellement installer si ce n'est déjà fait :
+Il s'agit pour la plupart de fonctions écrites en R base et point de `ggplot2` ou de `dplyr` dedans.. Je suis de la vieille école et suis relativement à l'aise avec les bricolages de R base. Les grammaires spécifiques à ces nouveaux écosystèmes de package `ggplot2` ou de `dplyr`, je ne me les suis jamais vraiment approprié et j'ai l'impression d'aller plus vite avec `base`.. C'est donc fort probable que des solutions plus fancy existent dans ces nouveaux packages, pour faire la même chose que ce que je propose ici..
+
+Depuis peu l'installation est possible via Github, c'est ultra simple en utilisant une fonction du package `devtools`, qu'il faut donc potentiellement installer si ce n'est déjà fait. Mais depuis peu également, un autre package `rtools` dont dépends `devtools`, doit être installé comme un plug-in à part, si vous ne l'avez jamais fais, téléchargez et installer `rtools` à partir du lien suivant :
+https://cran.r-project.org/bin/windows/Rtools/
 
 
 ## Pour l'installer 
 
 ```{r eval=FALSE}
 install.packages("devtools") 
-#? ne faire que si vous n'avez jamais installé devtools
+#A ne faire que si vous n'avez jamais installé devtools
 library(devtools)
 devtools::install_github("RenaudJau/Renaudpack2")
 ```
@@ -32,7 +35,7 @@ devtools::install_github("RenaudJau/Renaudpack2")
 
 ```{r eval=FALSE}
 install.packages("devtools")
-#? ne faire que si vous n'avez jamais install? devtools
+#A ne faire que si vous n'avez jamais installé devtools
 
 library(devtools)
 devtools::update_packages("Renaudpack2")
@@ -45,14 +48,9 @@ library(Renaudpack2)
 ```
 
 
-Si jamais il y a un message d'erreur du style de l'impression ?cran ci-apr?s :
-![](C:/Users/renaud.jaunatre/Documents/A_ANALYSES/Renaudpack2/ErrorRenaudpack2.png)
-
-Je ne sais pas encore d'où ça vient, mais en redémarrant R `Session > Restart R` ou `Ctrl+Shift+F10`, et en refaisant `library(Renaudpack2)` ?a semble fonctionner.
-
 \newpage
 
-# Les fonctions graphiques pour les analyses univari?es
+# Les fonctions graphiques pour les analyses univariées
 
 Pour les besoins de ce tuto, on créé des fausses données :
 
@@ -121,6 +119,8 @@ barres.plot(biomasse,traitement,lettres = lettresPH)
 ```
 
 *Note : possibilité de changer le seuil alpha en utilisant l'argument `ALPHA`.
+
+Bon.. cette fonction fonctionne bien après une anova
 
 \newpage
 

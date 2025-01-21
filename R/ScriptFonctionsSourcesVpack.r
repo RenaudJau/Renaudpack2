@@ -2128,6 +2128,8 @@ point.plot<-function(variable,Facteur,lettres=c(""),type="p",ecart="sem",ylim="N
   errors.bars(ybar,se,labels,lettres,YL=YL)
 }
 
+#-------------------------- DissRef3 ---------------------------------------------
+
 #' Similarities between references and restoration
 #' 
 #' @description Calculate similarity between plots and a group of reference plot
@@ -2228,7 +2230,7 @@ DissRef3 <- function (RELEVES, REF, METHOD = "bray", BINARY = FALSE, DUPLICATES 
   return(Output)
 }
 
-
+#-------------------------- Diss_Ref_Plot ---------------------------------------------
 
 #' Plot of references and restoration site dissimilarities
 #' @description Display similarity link (previously calculated with \code{\link{ChosseRef::DissRef3}} function) between plots and a group of reference plot
@@ -2359,6 +2361,7 @@ Diss_Ref_Plot <- function(RELEVES, REF, DISTANCES,
   }
 }
 
+#-------------------------- Replace.NA ---------------------------------------------
 
 #' Replace NA by mean
 #' 
@@ -2377,8 +2380,8 @@ Diss_Ref_Plot <- function(RELEVES, REF, DISTANCES,
 #' tab_essai<-data.frame(var1,var2,var3)
 #' 
 #' #L'utilisation de la fonction :
-#' tab_essai_new<-RepNAbyMean(tab_essai)
-RepNAbyMean<-function(TAB)
+#' tab_essai_new<-Replace.NA(tab_essai)
+Replace.NA <- function(TAB)
 {
   meancol<-apply(TAB,2,function(x) mean(x,na.rm=T)) #calcul des moyennes par colonnes
   tab_new<-data.frame(apply(TAB,c(1,2),function(x) x=0)) #création d'un nouveau tableau de m?me dimension avec que des 0
@@ -2390,7 +2393,7 @@ RepNAbyMean<-function(TAB)
   tab_new<-tab_new
 }
 
-
+#-------------------------- Heures ---------------------------------------------
 
 #' Passer d'un format d'heure en décimale à du texte d'heure normales
 #'
@@ -2409,6 +2412,7 @@ Heures<-function(heure_dec)
   paste0(heures_h,"h",ifelse(heures_m<10,paste0("0",heures_m),heures_m))
 }
 
+#-------------------------- label.corV2 ---------------------------------------------
 
 #' Affichage d'espèces correlées
 #' 
@@ -2511,6 +2515,7 @@ label.corV2 <- function(COO_ESP, COO_REL, RELEVES, METHOD = "defaut", P= "defaut
   }
 }
 
+#-------------------------- ecart.ctrl ---------------------------------------------
 
 #' Ecart à un témoin par site
 #' 
@@ -2563,4 +2568,6 @@ ecart.ctrl <- function(VARIABLE,FACTEUR,CAT_COMP,SITE)
   }
   return(output)
 }
+
+#-------------------------- ecart.ctrl ---------------------------------------------
 
