@@ -1469,7 +1469,7 @@ multivar.polyg <-function (ANAcoo, FAC, pch = 1, col_dot = 1, col_fill = NA, col
 
 #' Trace des fleches suite a une ACP
 #'
-#' @param ANALYSE objets issues d'una ACP avec dudi.pca (ade4)
+#' @param COO coordonnées des variables (ANALYSE$co pour une ACP avec ade4::dudi.pca et summary(ANALYSE)$biplot pour une RDA avec vegan::rda)
 #' @param coef un coef multiplicateur (pour exploser ou non la dispersion dans le plan)
 #' @param length longueur de l'encoche des fleches, 0.1 = 10pourcent par defaut
 #' @param angle angle des encoches des fleches, 15 = 15deg par defaut
@@ -1478,24 +1478,31 @@ multivar.polyg <-function (ANAcoo, FAC, pch = 1, col_dot = 1, col_fill = NA, col
 #'
 #' @export
 #'
-#' @examples # Creation donnees :
-#' sol<-c(rnorm(10,5,2),rnorm(10,15,3))
-#' veg<-c(rnorm(20,21,5))
-#' amphi<-c(rnorm(5,5,2),rnorm(5,5,3),rnorm(5,5,2),rnorm(5,5,3))
-#' tablo<-data.frame(sol,veg,amphi)
-#' # Faire l'ACP
+#' @examples #après une rda :
+#' library(vegan)
+#' data("dune")
+#' data("dune.env")
+#' A1<- dune.env$A1
+#' Manure <- as.numeric(as.character(dune.env$Manure))
+#' Moisture <- as.numeric(as.character(dune.env$Moisture))
+#' ANALYSE_RDA <- rda(dune~A1+Manure+Moisture)
+#' plot(summary(ANALYSE_RDA)$sites)
+#' better_arrows(COO = summary(ANALYSE_RDA)$biplot, coef = 2, col_text = "orange")
+#' # après une acp :
 #' library(ade4)
-#' ACP<-dudi.pca(tab,scannf = F, nf = 2)
-#' plot(ACP$li)
-#' better_arrows(ACP,coef=2)
-better_arrows<-function(ANALYSE,coef=1,length=0.1,angle=15,col_text=1,...)
+#' ANALYSE_ACP <- dudi.pca(dune, scannf = F, nf = 2) #pas idéal sur des données espèces, c'est juste pour l'exemple..
+#' plot(ANALYSE_ACP$li) #pour avoir le cadre des relevés
+#' better_arrows(COO = ANALYSE_ACP$co, coef = 3, col_text = "firebrick")
+better_arrows<-function(COO, coef = 1, length = 0.1, angle = 15, col_text = 1, 
+                        ...) 
 {
-  for(i in 1:ncol(ANALYSE$tab))
-  {
-    arrows(0,0,coef*ANALYSE$co[i,1],coef*ANALYSE$co[i,2],length=length,angle=angle,...)
-    adj1<-ifelse(ANALYSE$co[i,1]<0,1,0)
-    adj2<-ifelse(ANALYSE$co[i,2]<0,1,0)
-    text(coef*ANALYSE$co[i,],names(ANALYSE$tab)[i],adj=c(adj1,adj2),col=col_text)
+  for (i in 1:nrow(COO)) {
+    arrows(0, 0, coef * COO[i, 1], coef * COO[i, 
+                                              2], length = length, angle = angle, ...)
+    adj1 <- ifelse(COO[i, 1] < 0, 1, 0)
+    adj2 <- ifelse(COO[i, 2] < 0, 1, 0)
+    text(coef * COO[i, 1],coef * COO[i, 2], row.names(COO)[i], adj = c(adj1, 
+                                                                       adj2), col = col_text)
   }
 }
 

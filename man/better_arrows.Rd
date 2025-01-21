@@ -4,10 +4,10 @@
 \alias{better_arrows}
 \title{Trace des fleches suite a une ACP}
 \usage{
-better_arrows(ANALYSE, coef = 1, length = 0.1, angle = 15, col_text = 1, ...)
+better_arrows(COO, coef = 1, length = 0.1, angle = 15, col_text = 1, ...)
 }
 \arguments{
-\item{ANALYSE}{objets issues d'una ACP avec dudi.pca (ade4)}
+\item{COO}{coordonnées des variables (ANALYSE$co pour une ACP avec ade4::dudi.pca et summary(ANALYSE)$biplot pour une RDA avec vegan::rda)}
 
 \item{coef}{un coef multiplicateur (pour exploser ou non la dispersion dans le plan)}
 
@@ -23,14 +23,19 @@ better_arrows(ANALYSE, coef = 1, length = 0.1, angle = 15, col_text = 1, ...)
 Trace des fleches suite a une ACP
 }
 \examples{
-# Creation donnees :
-sol<-c(rnorm(10,5,2),rnorm(10,15,3))
-veg<-c(rnorm(20,21,5))
-amphi<-c(rnorm(5,5,2),rnorm(5,5,3),rnorm(5,5,2),rnorm(5,5,3))
-tablo<-data.frame(sol,veg,amphi)
-# Faire l'ACP
+#après une rda :
+library(vegan)
+data("dune")
+data("dune.env")
+A1<- dune.env$A1
+Manure <- as.numeric(as.character(dune.env$Manure))
+Moisture <- as.numeric(as.character(dune.env$Moisture))
+ANALYSE_RDA <- rda(dune~A1+Manure+Moisture)
+plot(summary(ANALYSE_RDA)$sites)
+better_arrows(COO = summary(ANALYSE_RDA)$biplot, coef = 2, col_text = "orange")
+# après une acp :
 library(ade4)
-ACP<-dudi.pca(tab,scannf = F, nf = 2)
-plot(ACP$li)
-better_arrows(ACP,coef=2)
+ANALYSE_ACP <- dudi.pca(dune, scannf = F, nf = 2) #pas idéal sur des données espèces, c'est juste pour l'exemple..
+plot(ANALYSE_ACP$li) #pour avoir le cadre des relevés
+better_arrows(COO = ANALYSE_ACP$co, coef = 3, col_text = "firebrick")
 }
