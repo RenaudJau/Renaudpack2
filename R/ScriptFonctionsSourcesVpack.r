@@ -1474,6 +1474,7 @@ multivar.polyg <-function (ANAcoo, FAC, pch = 1, col_dot = 1, col_fill = NA, col
 #' @param length longueur de l'encoche des fleches, 0.1 = 10pourcent par defaut
 #' @param angle angle des encoches des fleches, 15 = 15deg par defaut
 #' @param col_text couleur du texte
+#' @param col couleur des flèches
 #' @param ... n'importe quel argument de la fonction arrows
 #'
 #' @export
@@ -1493,16 +1494,19 @@ multivar.polyg <-function (ANAcoo, FAC, pch = 1, col_dot = 1, col_fill = NA, col
 #' ANALYSE_ACP <- dudi.pca(dune, scannf = F, nf = 2) #pas idéal sur des données espèces, c'est juste pour l'exemple..
 #' plot(ANALYSE_ACP$li) #pour avoir le cadre des relevés
 #' better_arrows(COO = ANALYSE_ACP$co, coef = 3, col_text = "firebrick")
-better_arrows<-function(COO, coef = 1, length = 0.1, angle = 15, col_text = 1, 
+better_arrows<-function(COO, coef = 1, length = 0.1, angle = 15, col_text = 1, col = 1, 
                         ...) 
 {
+  col <- rep(col, length(COO[,1]))
+  col_text <- rep(col_text, length(COO[,1]))
   for (i in 1:nrow(COO)) {
     arrows(0, 0, coef * COO[i, 1], coef * COO[i, 
-                                              2], length = length, angle = angle, ...)
+                                              2], 
+           length = length, angle = angle, col = col[i],...)
     adj1 <- ifelse(COO[i, 1] < 0, 1, 0)
     adj2 <- ifelse(COO[i, 2] < 0, 1, 0)
-    text(coef * COO[i, 1],coef * COO[i, 2], row.names(COO)[i], adj = c(adj1, 
-                                                                       adj2), col = col_text)
+    text(coef * COO[i, 1],coef * COO[i, 2], row.names(COO)[i], 
+         adj = c(adj1, adj2), col = col_text[i])
   }
 }
 

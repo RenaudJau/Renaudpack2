@@ -4,7 +4,15 @@
 \alias{better_arrows}
 \title{Trace des fleches suite a une ACP}
 \usage{
-better_arrows(COO, coef = 1, length = 0.1, angle = 15, col_text = 1, ...)
+better_arrows(
+  COO,
+  coef = 1,
+  length = 0.1,
+  angle = 15,
+  col_text = 1,
+  col = 1,
+  ...
+)
 }
 \arguments{
 \item{COO}{coordonnées des variables (ANALYSE$co pour une ACP avec ade4::dudi.pca et summary(ANALYSE)$biplot pour une RDA avec vegan::rda)}
@@ -16,6 +24,8 @@ better_arrows(COO, coef = 1, length = 0.1, angle = 15, col_text = 1, ...)
 \item{angle}{angle des encoches des fleches, 15 = 15deg par defaut}
 
 \item{col_text}{couleur du texte}
+
+\item{col}{couleur des flèches}
 
 \item{...}{n'importe quel argument de la fonction arrows}
 }
