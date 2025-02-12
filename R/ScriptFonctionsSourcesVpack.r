@@ -2611,6 +2611,7 @@ multivar.domi <- function(COO_REL, RELEVES, ESP, COL_NULL = "gray",
 #'
 #' @examples library(vegan)
 #' data("dune")
+#' data("dune.env")
 #' Especes_Typiques(RELEVES = dune, FAC = dune.env$Use, NOMBRE = 5)
 #' Hay <- Especes_Typiques(RELEVES = dune, FAC = dune.env$Use, NOMBRE = 3,
 #'                  MOD = "Hayfield", NOMBRESTRICT = TRUE)
